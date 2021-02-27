@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>在线程序实验平台-主页</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<script src="templates/js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">首页</a>
+        </div>
+        <div class="navbar">
+            <span id="username"><a href="login">请登录</a></span>
+        </div>
+    </div>
+</nav>
+<script>
+    $(document).ready(function (){
+        $.ajax({
+            url:"/loginOrNot",
+            type:"get",
+            success:function (data){
+                if(data){
+                    $("#username").html("欢迎"+data.name);
+                }
+            }
+        })
+    });
+</script>
+
+</body>
+</html>

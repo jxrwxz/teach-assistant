@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/teachassistant
+    username: root
+    password: jxr19981101
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  resources:
+    static-locations: classpath:/
+  mvc:
+    view:
+      suffix: .html
+
