@@ -1,7 +1,9 @@
 package jxrwxz.teachassistant.web;
 
 import jxrwxz.teachassistant.Student;
+import jxrwxz.teachassistant.Teacher;
 import jxrwxz.teachassistant.data.StudentRepository;
+import jxrwxz.teachassistant.data.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -20,20 +22,35 @@ public class LoginController {
     @Autowired
     private StudentRepository stuRepo;
 
+    @Autowired
+    private TeacherRepository teaRepo;
+
     @PostMapping("/login")
     public String processLogin(HttpServletRequest request){
+        String identity=request.getParameter("identity");
         String name=request.getParameter("name");
         String password=request.getParameter("password");
-        Student student=stuRepo.findByNameAndPassword(name,password);
-        if(student!=null){
-            request.getSession().setAttribute("login",student);
-            request.getSession().setAttribute("user","student");
-            return "home";
+        if(identity.equals("student")){
+            Student student=stuRepo.findByNameAndPassword(name,password);
+            if(student!=null){
+                request.getSession().setAttribute("login",student);
+                request.getSession().setAttribute("identity","student");
+                return "home";
+            }
+        }
+        if(identity.equals("teacher")){
+            Teacher teacher=teaRepo.findByNameAndPassword(name,password);
+            if(teacher!=null){
+                request.getSession().setAttribute("login",teacher);
+                request.getSession().setAttribute("identity","teacher");
+                return "home";
+
+            }
         }
         return "login";
     }
     @GetMapping("/login")
-    public String studentLogin(){
+    public String userLogin(){
         return "login";
     }
 

@@ -26,7 +26,7 @@
             url:"/loginOrNot",
             type:"get",
             success:function (data){
-                if(data){
+                if(data.name){
                     $("#username").html("欢迎"+data.name);
                 }
             }

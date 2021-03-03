@@ -14,14 +14,17 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor(access= AccessLevel.PRIVATE,force=true)
 @RequiredArgsConstructor
-public class Student {
+public class Teacher {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     private final String name;
+
     private final String password;
+
     private final String phoneNumber;
+
     private final String schoolName;
 }
