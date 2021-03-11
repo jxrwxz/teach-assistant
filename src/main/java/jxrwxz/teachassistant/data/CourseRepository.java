@@ -13,6 +13,6 @@ public interface CourseRepository extends CrudRepository<Course,Long>{
 
     List<Course> findByTeacherName(String teacherName);
 
-    @Query(value = "select ID,NAME from course ORDER BY ID desc LIMIT 16",nativeQuery = true)
+    @Query(value = "select * from course ORDER BY ID desc LIMIT 16",nativeQuery = true)
     List<Course> findRecentCourses();
 }

@@ -12,8 +12,10 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="ID")
     private Long id;
 
+    @Column(name="CREATED_AT")
     private Date createdAt;
 
     @NotNull
@@ -47,8 +49,6 @@ public class Course {
         this.proved=new Integer(0);
     }
 
-
-
-
+    public Course(){}
 
 }
