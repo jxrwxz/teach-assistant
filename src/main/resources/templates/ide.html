@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IDE</title>
+    <link rel="stylesheet" href="templates/css/bootstrap.css">
+</head>
+<body>
+<script src="templates/js/jquery-3.4.1.min.js"></script>
+<script src="templates/js/bootstrap.js"></script>
+
+<h1 style="text-align: center;margin-bottom: 120px">欢迎来到在线程序实验平台！</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12" style="text-align:center">
+            <form id="form">
+                <div style="margin:30px 30px;font-size:15px">在线编译</div>
+
+                <div>
+                    <textarea id="myInput" name="myInput" rows="4" cols="100" placeholder="请输入JAVA源码"></textarea>
+                </div>
+
+                <div>
+                    <textarea id="mySystemIn" name="mySystemIn" rows="4" cols="100" placeholder="请输入System Input的内容"></textarea>
+                </div>
+
+                <input type="button" id="btn"value="确认"class="btn btn-default" onclick="compileCode()">
+            </form>
+            <div class="thumbnail col-sm-12 col-md-12">
+                <div class="caption">
+                    <div id="result">测试结果</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function compileCode(){
+        var data={
+            code:$("#myInput").val(),
+            systemIn:$("#mySystemIn").val()
+        };
+
+        $.ajax({
+            url:"/ide",
+            type:"post",
+            data:data,
+            success:function (data2){
+                $("#result").html("<p>" + data2.result + "</p>");
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

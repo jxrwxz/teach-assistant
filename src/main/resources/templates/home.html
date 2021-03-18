@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>在线程序实验平台-主页</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="templates/css/bootstrap.css">
 </head>
 <body>
 <script src="templates/js/jquery-3.4.1.min.js"></script>
-<script src="js/bootstrap.js"></script>
+<script src="templates/js/bootstrap.js"></script>
 <style>
     .carousel-inner img {
         width : 100% ;
@@ -244,7 +244,8 @@
                     $("#username").html("欢迎"+data.name);
                 }
             }
-        })
+        });
+        loadCourses("recent");
     });
 
     function loadCourses(string){
