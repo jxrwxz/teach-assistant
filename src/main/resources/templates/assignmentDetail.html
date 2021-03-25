@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="templates/css/bootstrap.css">
+    <style type="text/css">
+        .chat_room{
+            width: 600px;
+            height: 500px;
+            border: 1px solid #666;
+            margin: 50px auto 0;
+            background: #f9f9f9;
+        }
+        .talk_show {
+            width: 580px;
+            height: 420px;
+            border: 1px solid #666;
+            background: #fff;
+            margin: 10px auto 0;
+            overflow: auto;
+        }
+        .talk_input {
+            width: 580px;
+            margin: 10px auto 0;
+        }
+        #chatContent{
+            width: 310px;
+            height: 26px;
+            padding: 0px;
+            float: left;
+            margin-left: 10px;
+            outline: none;
+            text-indent: 10px;
+        }
+        .talk_sub {
+            width: 56px;
+            height: 30px;
+            float: left;
+            margin-left: 10px;
+        }
+        .asay {
+            margin: 10px;
+        }
+        .asay span{
+            display: inline-block;
+            background: #3e8f3e;
+            border-radius: 10px;
+            color: #fff;
+            padding: 5px 10px;
+        }
+        .bsay {
+            margin: 10px;
+            text-align: right;
+        }
+        .bsay span {
+            display: inline-block;
+            background: #adadad;
+            border-radius: 10px;
+            color: #fff;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+<script src="templates/js/jquery-3.4.1.min.js"></script>
+<script src="templates/js/bootstrap.js"></script>
+
+<script>
+    var chat_websocket;
+    output = document.getElementById("output");
+    var wsUri = "ws://localhost:8080/chat";
+    var identity=null;
+    var id;
+    var words=document.getElementById("words");
+    //LOR:Left or Right,1代表左边，0代表右边
+    function writeToScreen(message,LOR){
+        var str='';
+        if(LOR==1) {
+            str = '<div class="asay"><span>' + message + '</span></div>';
+        }else if(LOR==0){
+            str = '<div class="bsay"><span>' + message + '</span></div>';
+        }
+        document.getElementById("words").innerHTML+=str;
+        $("#chatContent").text("");
+    };
+
+    $(document).ready(function () {
+        $.ajax({
+            url:"/loginOrNot",
+            type:"get",
+            success:function (data){
+                identity=data.identity;
+                id=data.id;
+                wsUri += "/" + identity + "/" + id;
+                writeToScreen("ajax成功",1);
+                writeToScreen("Connecting to " + wsUri,1);
+                chat_websocket = new WebSocket(wsUri);
+                chat_websocket.onopen = function (evt) {
+                    writeToScreen("Connected !",1);
+                    // doSend(textID.value);
+                }
+            }
+        });
+    });
+    $(document).ready(function() {
+        $("#going").click(function () {
+            chat_websocket.onmessage = function (evt) {
+                writeToScreen("Received message: " + evt.data,1);
+                // echo_websocket.close();
+            };
+            // chat_websocket.addEventListener("message", function(event) {
+            //     var data = event.data;
+            //     // 处理数据
+            // });
+            chat_websocket.onerror = function (evt) {
+                writeToScreen('ERROR:' + evt.data,1);
+                chat_websocket.close();
+            };
+            $("#fsbtn").click(function () {
+                var message = $("#chatContent").val();
+                message = "{\"message\":\"" + message + "\",\"fromUserId\":\"";
+                message += "1" + "\",\"toUserId\":\"";
+                message += "2" + "\"}";
+                chat_websocket.send(message);
+                writeToScreen("Sent message: " + message,0);
+                chat_websocket.onmessage = function (evt) {
+                    writeToScreen("Received message: " + evt.data,1);
+                    // echo_websocket.close();
+                };
+            });
+        });
+    });
+
+
+</script>
+
+<h1>讨论</h1>
+
+<div class="chat_room">
+    <div class="talk_show" id="words">
+        <div class="chat">
+            <span class="asay">开始讨论！</span>
+        </div>
+    </div>
+    <div class="talk_input">
+        <input type="button" value="开始聊天" style="width: 75px;" class="talk_sub" id="going">
+        <textarea name="chatContent" id="chatContent"cols="5" rows="20" placeholder="请输入"></textarea>
+        <input type="button" id="fsbtn"value="发送"class="btn btn-default" >
+    </div>
+</div>
+
+</body>
+</html>

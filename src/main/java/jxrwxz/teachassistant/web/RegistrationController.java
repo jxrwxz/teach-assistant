@@ -53,21 +53,24 @@ public class RegistrationController {
     public String loginOrNot(HttpServletRequest request){
         HttpSession session=request.getSession(false);
         String name="";
+        Long id=new Long(0);
+        String identity="";
         if(session!=null) {
-            String identity=(String)session.getAttribute("identity");
+            identity=(String)session.getAttribute("identity");
             if(identity.equals("student")) {
                 Student student = (Student) session.getAttribute("login");
                 name=student.getName();
-                System.out.println(student.getName());
-            }
-            if(identity.equals("teacher")){
+                id=student.getId();
+            } else if(identity.equals("teacher")){
                 Teacher teacher=(Teacher) session.getAttribute("login");
-                System.out.println(teacher.getName());
                 name=teacher.getName();
-            }
+                id=teacher.getId();
+              }
         }
 
-        return "{\"name\":\"" + name + "\"}";
+        return "{\"name\":\"" + name
+                + "\",\"identity\":\"" + identity
+                + "\",\"id\":\"" + id + "\"}";
     }
 
 }

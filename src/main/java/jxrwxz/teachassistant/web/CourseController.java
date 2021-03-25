@@ -44,4 +44,14 @@ public class CourseController {
         ModelAndView modelAndView=new ModelAndView("mine");
         return modelAndView;
     }
+    @GetMapping("assignmentDetail")
+    public ModelAndView chat(){
+        ModelAndView modelAndView=new ModelAndView("assignmentDetail");
+        return modelAndView;
+    }
+
+    @GetMapping("teacherChat")
+    public ModelAndView dd(){
+        return new ModelAndView("teacherChat");
+    }
 }

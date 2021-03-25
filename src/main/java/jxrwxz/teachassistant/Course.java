@@ -2,7 +2,10 @@ package jxrwxz.teachassistant;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 

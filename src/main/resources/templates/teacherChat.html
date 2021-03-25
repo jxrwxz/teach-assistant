@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="templates/css/bootstrap.css">
+</head>
+<body>
+<script src="templates/js/jquery-3.4.1.min.js"></script>
+<script src="templates/js/bootstrap.js"></script>
+
+<script>
+    var chat_websocket;
+    output = document.getElementById("output");
+    var wsUri = "ws://localhost:8080/chat";
+    var identity=null;
+    var id;
+    var words=document.getElementById("words");
+    function writeToScreen(message){
+        var str='';
+        str='<div class="aTalk"><span>' + message +'</span></div>';
+        document.getElementById("words").innerHTML+=str;
+        $("#chatContent").text("");
+    };
+
+    $(document).ready(function () {
+        $.ajax({
+            url:"/loginOrNot",
+            type:"get",
+            success:function (data){
+                identity=data.identity;
+                id=data.id;
+                wsUri += "/" + identity + "/" + id;
+                writeToScreen("ajax成功");
+                alert("进入聊天室");
+                writeToScreen("Connecting to " + wsUri);
+                chat_websocket = new WebSocket(wsUri);
+                chat_websocket.onopen = function (evt) {
+                    writeToScreen("Connected !");
+                    // doSend(textID.value);
+                }
+            }
+        });
+    });
+    $(document).ready(function() {
+        $("#going").click(function () {
+            chat_websocket.onmessage = function (evt) {
+                writeToScreen("Received message: " + evt.data);
+                // echo_websocket.close();
+            };
+            // chat_websocket.addEventListener("message", function(event) {
+            //     var data = event.data;
+            //     // 处理数据
+            // });
+            chat_websocket.onerror = function (evt) {
+                writeToScreen('ERROR:' + evt.data);
+                chat_websocket.close();
+            };
+            $("#fsbtn").click(function () {
+                alert("发送了信息");
+                var message = $("#chatContent").val();
+                message = "{\"message\":\"" + message + "\",\"fromUserId\":\"";
+                message += "2" + "\",\"toUserId\":\"";
+                message += "1" + "\"}";
+                chat_websocket.send(message);
+                writeToScreen("Sent message: " + message);
+                chat_websocket.onmessage = function (evt) {
+                    writeToScreen("Received message: " + evt.data);
+                    // echo_websocket.close();
+                };
+            });
+        });
+    });
+
+    // function doSend(message){
+    //     message="{\"message\":\"" + message + "\",\"fromUserId\":\"";
+    //     message+="1"+ "\",\"toUserId\":\"";
+    //     message+="2" + "\"}";
+    //     chat_websocket.send(message);
+    //     writeToScreen("Sent message: " + message);
+    // }
+
+</script>
+
+<h1>讨论</h1>
+
+<div class="chat_room">
+    <div class="talk_show" id="words">
+        <div class="chat">
+            <span id="asay">开始讨论！</span>
+        </div>
+    </div>
+    <div class="talk_input">
+        <input type="button" value="进入聊天室" style="width: 75px;" class="talk_sub" id="going">
+        <textarea name="chatContent" id="chatContent"cols="4" rows="8" placeholder="请输入"></textarea>
+        <input type="button" id="fsbtn"value="发送"class="btn btn-default" >
+    </div>
+</div>
+
+</body>
+</html>
