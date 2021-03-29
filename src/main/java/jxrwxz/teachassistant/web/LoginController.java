@@ -55,7 +55,11 @@ public class LoginController {
     }
 
     @GetMapping("/home")
-    public String home(){
+    public String home(HttpServletRequest request){
+        HttpSession session=request.getSession(false);
+        if(session==null){
+            return "login";
+        }
         return "home";
     }
 

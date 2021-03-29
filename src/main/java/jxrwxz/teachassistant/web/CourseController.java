@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,11 @@ public class CourseController {
         return courseRepo.findRecentCourses();
     }
 
+    @GetMapping("/course/popular")
+    public List<Course> popularCourses(){
+        return courseRepo.findPopularCourses();
+    }
+
     @PostMapping("/course")
     @ResponseStatus(HttpStatus.CREATED)
     public Course addCourse(HttpServletRequest request){
@@ -39,11 +45,11 @@ public class CourseController {
         return courseRepo.save(course);
     }
 
-    @GetMapping("mine")
-    public ModelAndView mine(){
-        ModelAndView modelAndView=new ModelAndView("mine");
-        return modelAndView;
+    @GetMapping("/courseDetail/{courseId}")
+    public String courseDetail(@PathVariable("courseId") Long courseId){
+        return "{\"courseId\":\"" + courseId + "\"}";
     }
+
     @GetMapping("assignmentDetail")
     public ModelAndView chat(){
         ModelAndView modelAndView=new ModelAndView("assignmentDetail");

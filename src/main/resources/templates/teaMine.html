@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的</title>
+    <link rel="stylesheet" href="templates/css/bootstrap.css">
+</head>
+<body>
+<script src="templates/js/jquery-3.4.1.min.js"></script>
+<script src="templates/js/bootstrap.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+                <li><a href="#" onclick="teaMyCourses()" autofocus="autofocus">我教的课程</a></li>
+                <li><a href="#">我布置的作业</a></li>
+                <!--新增课程的按钮-->
+                <li><a href="#" data-toggle="modal" data-target="#addCourse" data-backdrop="static">新增课程</a></li>
+                <!--增加个人简介的按钮-->
+                <li><a href="#" data-toggle="modal" data-target="#addTeaProfile" data-backdrop="static">新增或修改个人简介</a></li>
+                <li><a href="#" onclick="myProfile()">个人简历</a></li>
+            </ul>
+        </div>
+        <div class="col-md-8 col-md-offset-1" id="presentation">
+
+        </div>
+    </div>
+</div>
+
+
+<!--新增课程的弹窗-->
+<div id="addCourse" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCourse" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" >新增课程</h4>
+            </div>
+
+            <div class="modal-body">
+                            <form id="form">
+                                课程名: <input type="text" name="courseName" id="courseName"/>
+                                <br>
+                                简介: <input type="text"name="introduction" id="introduction"/>
+                            </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addCourse()">提交</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--新增教师简介弹窗-->
+<div id="addTeaProfile" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addTeaProfile" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" >新增我的个人简介</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="form2">
+                    <br>
+                    个人简介: <input type="text"name="teaProfile" id="teaProfile"/>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addTeaProfile()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addCourse(){
+        var data={
+            courseName:$("#courseName").val(),
+            introduction:$("#introduction").val()
+        };
+        $.ajax({
+            url:"/course",
+            data:data,
+            type:"post",
+            success:function (){
+                $("#addCourse").modal('hide');
+            }
+        })
+    }
+    function addTeaProfile(){
+        var data={
+            teaProfile:$('#teaProfile').val()
+        };
+        $.ajax({
+            url:"/addTeaProfile",
+            data:data,
+            type:"post",
+            success:function (){
+                $("#addTeaProfile").modal('hide');
+                alert("新增个人简介成功");
+            }
+        })
+    }
+
+    function myProfile(){
+        $.ajax({
+            url:"/teaProfile",
+            type:"get",
+            success:function (data){
+                var divPresentation = $("#presentation");
+                divPresentation.html("");
+                divPresentation.append(
+                    '<h2>个人简介</h2>'
+                    +'<p class="text-muted">'
+                    + data.teaProfile
+                    +'</p>'
+                );
+            }
+        })
+    }
+
+    function teaMyCourses(){
+        $.ajax({
+            url:"/teaMyCourses",
+            type:"get",
+            success:function (data){
+                var divPresentation = $("#presentation");
+                divPresentation.html("");
+                for(var i=0;i<data.length;i++){
+                    divPresentation.append(
+                        '<div class="thumbnail"><div class="caption text-center"> <h3>'
+                        + data[i].name
+                        +'</h3><p class="introduction">'
+                        + data[i].introduction
+                        +'</p><p><a href="courseDetail.html" class="btn btn-info" role="button">'
+                        + '课程详情'
+                        +'</a></p></div></div>'
+                    )
+                }
+            }
+        })
+    }
+    $(document).ready(teaMyCourses());
+</script>
+
+</body>
+</html>

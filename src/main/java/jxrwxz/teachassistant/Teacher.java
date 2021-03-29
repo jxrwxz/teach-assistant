@@ -27,4 +27,6 @@ public class Teacher {
     private final String phoneNumber;
 
     private final String schoolName;
+
+    private String profile;
 }
