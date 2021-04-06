@@ -4,17 +4,34 @@
     <meta charset="UTF-8">
     <title>我的</title>
     <link rel="stylesheet" href="templates/css/bootstrap.css">
+    <link rel="stylesheet" href="templates/css/bootstrap-datetimepicker.min.css">
 </head>
 <body>
 <script src="templates/js/jquery-3.4.1.min.js"></script>
 <script src="templates/js/bootstrap.js"></script>
+<script src="templates/js/bootstrap-datetimepicker.min.js"></script>
+<script src="templates/js/bootstrap-datetimepicker.fr.js"></script>
+<!--顶部的导航条-->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/home">首页</a>
+        </div>
+        <ul class="nav nav-pills">
+            <li role="presentation" id="username"><a href="login">请登录</a></li>
+            <li role="presentation"><a href="mine">我的</a></li>
+        </ul>
+    </div>
+</nav>
 
 <div class="container">
     <div class="row">
         <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked" role="tablist">
                 <li><a href="#" onclick="teaMyCourses()" autofocus="autofocus">我教的课程</a></li>
-                <li><a href="#">我布置的作业</a></li>
+                <li><a href="#" onclick="teaAssignment()">我布置的作业</a></li>
+                <!--课程下新增作业的按钮，不用，一直隐藏，只是为了跟弹框匹配-->
+                <li class="hidden"><a href="#" data-toggle="modal" data-target="#addAssignment" data-backdrop="static">课程下新增作业</a></li>
                 <!--新增课程的按钮-->
                 <li><a href="#" data-toggle="modal" data-target="#addCourse" data-backdrop="static">新增课程</a></li>
                 <!--增加个人简介的按钮-->
@@ -76,7 +93,53 @@
     </div>
 </div>
 
+<!--新增作业的弹窗-->
+<div id="addAssignment" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addAssignment" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" >新增作业</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="form3">
+                    作业题目: <input type="text"name="name" id="name"/>
+                    <br>
+                    作业答案: <input type="text" name="answer" id="answer"/>
+                    <br>
+                    作业截止日期: <div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd"  data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value=""id="expireDate" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="assignmentProcess()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    var courseId;
+    $(document).ready(function (){
+        $.ajax({
+            url:"/loginOrNot",
+            type:"get",
+            success:function (data){
+                if(data.name){
+                    $("#username").html("欢迎"+data.name);
+                }
+            }
+        });
+        // $('expireDate').datetimepicker();
+    });
+
     function addCourse(){
         var data={
             courseName:$("#courseName").val(),
@@ -87,6 +150,7 @@
             data:data,
             type:"post",
             success:function (){
+                alert("新增课程成功");
                 $("#addCourse").modal('hide');
             }
         })
@@ -100,8 +164,8 @@
             data:data,
             type:"post",
             success:function (){
-                $("#addTeaProfile").modal('hide');
                 alert("新增个人简介成功");
+                $("#addTeaProfile").modal('hide');
             }
         })
     }
@@ -136,15 +200,76 @@
                         + data[i].name
                         +'</h3><p class="introduction">'
                         + data[i].introduction
-                        +'</p><p><a href="courseDetail.html" class="btn btn-info" role="button">'
+                        +'</p><p><a href="/courseDetail/'
+                        + data[i].id + '"class="btn btn-info" role="button">'
                         + '课程详情'
-                        +'</a></p></div></div>'
+                        +'</a></p><button type="button" class="btn btn-primary" onclick="addAssignment('
+                        + data[i].id+ ')">新增作业</button></div></div>'
                     )
                 }
             }
         })
     }
     $(document).ready(teaMyCourses());
+
+    function addAssignment(cId){
+        $("#addAssignment").modal('show');
+        courseId=cId;
+    };
+    function assignmentProcess(){
+        var data={
+            name: $("#name").val(),
+            answer:$("#answer").val(),
+            expireDate:$("#expireDate").val(),
+            courseId:courseId
+        };
+        $.ajax({
+            url:"/courseAssignment",
+            data:data,
+            type:"post",
+            success:function(){
+                alert("新增作业成功！");
+                $("#addAssignment").modal('hide');
+            }
+        })
+    };
+    $('.form_date').datetimepicker({
+        language:  'En',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+    function teaAssignment(){
+        $.ajax({
+            url:"/teaAssignments",
+            type:"get",
+            success:function (data){
+                var divPresentation = $("#presentation");
+                divPresentation.html("");
+                for(var i=0;i<data.length;i++){
+                    var date=new Date(data[i].expireDate);
+                    divPresentation.append(
+                        '<div class="thumbnail"><div class="caption text-center"><h3>题目: '
+                        + data[i].name
+                        +'</h3><p class="answer">答案: '
+                        + data[i].answer
+                        +'</p><p class="expireDate">截止日期: '
+                        + date.getFullYear().toString()
+                        + '-'
+                        +date.getMonth().toString()
+                        + '-'
+                        + date.getDate().toString()
+                        +'</p></div></div>'
+                    )
+                }
+            }
+        })
+    }
 </script>
 
 </body>

@@ -28,6 +28,9 @@ public class Course {
     private String teacherName;
 
     @NotNull
+    private Long teacherId;
+
+    @NotNull
     private Integer proved;
 
     @NotNull
@@ -44,12 +47,13 @@ public class Course {
         this.createdAt=new Date();
     }
 
-    public Course(String teacherName,String name,String introduction){
+    public Course(String teacherName,String name,String introduction,Long teacherId){
         this.teacherName=teacherName;
         this.name=name;
         this.introduction=introduction;
         this.numberOfStudents=new Integer(0);
         this.proved=new Integer(0);
+        this.teacherId=teacherId;
     }
 
     public Course(){}

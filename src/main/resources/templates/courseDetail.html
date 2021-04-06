@@ -2,9 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>课程详情</title>
+    <title>Title</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!--顶部的导航条-->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/home">首页</a>
+        </div>
+        <ul class="nav nav-pills">
+            <li role="presentation" id="username"><a href="login">请登录</a></li>
+            <li role="presentation"><a href="mine">我的</a></li>
+        </ul>
+    </div>
+</nav>
+<h1 class="text-center">
+    <span class="glyphicon glyphicon-tag" aria-hidden="true">课程标题</span>
+</h1>
+<br>
+<br>
+<h3 class="text-info text-center">课程详情</h3>
+<br>
+<br>
+<dl class="dl-horizontal text-center">
+    <dt>课程简介</dt>
+    <dd id="introduction">Item 1</dd>
+    <br>
+    <dt>教师</dt>
+    <dd id="teacherName">Item 2</dd>
+    <br>
+    <dt>教师简介</dt>
+    <dd id="teacherProfile">llll</dd>
+    <br>
+    <dt>教师所在学校</dt>
+    <dd id="school">dddd</dd>
+    <br>
+    <dt>参加学生数量</dt>
+    <dd id="numberOfStudents">ddddd</dd>
+</dl>
 
+<script>
+    $(document).ready(function (){
+        $.ajax({
+            url:"/loginOrNot",
+            type:"get",
+            success:function (data){
+                if(data.name){
+                    $("#username").html("欢迎"+data.name);
+                }
+            }
+        });
+        loadCourses("recent");
+    });
+    $(document).ready(function(){
+        $.ajax({
+            url:"/courseDetail",
+            type:"get",
+            success:function (data){
+                $("#introduction").html(data.introduction);
+                $("#numberOfStudents").html(data.numberOfStudents);
+                $("h1").children("span").html(data.name);
+                $("#teacherName").html(data.teacherName);
+                $("#teacherProfile").html(data.teacherProfile);
+                $("#school").html(data.school);
+            }
+        })
+    })
+</script>
 </body>
 </html>

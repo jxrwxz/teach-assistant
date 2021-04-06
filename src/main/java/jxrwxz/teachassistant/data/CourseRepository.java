@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface CourseRepository extends CrudRepository<Course,Long>{
 
-    List<Course> findByName(String name);
 
     @Query(value = "select * from course ORDER BY ID desc LIMIT 16",nativeQuery = true)
     List<Course> findRecentCourses();
@@ -17,5 +16,5 @@ public interface CourseRepository extends CrudRepository<Course,Long>{
     @Query(value= "select * from course order by NUMBER_OF_STUDENTS desc LIMIT 16",nativeQuery = true)
     List<Course> findPopularCourses();
 
-    List<Course> findAllByTeacherName(String teacherName);
+    List<Course> findAllByTeacherId(Long teacherId);
 }
