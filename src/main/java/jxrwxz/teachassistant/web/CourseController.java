@@ -72,6 +72,8 @@ public class CourseController {
                 +"\",\"teacherName\":\"" + teacher.getName()
                 +"\",\"teacherProfile\":\"" + teacher.getProfile()
                 +"\",\"school\":\"" + teacher.getSchoolName()
+                +"\",\"courseId\":\"" + course.getId()
+                +"\",\"teacherId\":\"" + teacher.getId()
                 + "\"}";
     }
 

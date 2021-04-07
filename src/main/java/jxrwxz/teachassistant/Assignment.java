@@ -54,13 +54,14 @@ public class Assignment {
                       String answer,
                       Date expireDate,
                       Long courseId,
-                      Long teacherId){
-        serialNumber=new Integer(1);
+                      Long teacherId,
+                      Integer serialNumber){
         this.name=name;
         this.answer=answer;
         this.expireDate=expireDate;
         this.courseId=courseId;
         this.teacherId=teacherId;
+        this.serialNumber=serialNumber;
     }
 
 }

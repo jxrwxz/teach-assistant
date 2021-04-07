@@ -111,7 +111,9 @@
                     <input class="form-control" size="16" type="text" value=""id="expireDate" readonly>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                </div>
+                    </div>
+                    <br>
+                    作业序号：<input class="form-control" type="text" placeholder="请输入大于等于1的数字（为作业分组）"id="serialNumber">
 
 
                 </form>
@@ -128,6 +130,7 @@
 <script>
     var courseId;
     $(document).ready(function (){
+        //判断并显示用户的登录信息
         $.ajax({
             url:"/loginOrNot",
             type:"get",
@@ -137,9 +140,11 @@
                 }
             }
         });
+        teaMyCourses();
         // $('expireDate').datetimepicker();
     });
 
+    //新增课程
     function addCourse(){
         var data={
             courseName:$("#courseName").val(),
@@ -155,6 +160,7 @@
             }
         })
     }
+    //新增或改变教师简介
     function addTeaProfile(){
         var data={
             teaProfile:$('#teaProfile').val()
@@ -170,6 +176,7 @@
         })
     }
 
+    //显示我的简介
     function myProfile(){
         $.ajax({
             url:"/teaProfile",
@@ -187,6 +194,7 @@
         })
     }
 
+    //显示教师的所有课程，新增作业的按钮在这里
     function teaMyCourses(){
         $.ajax({
             url:"/teaMyCourses",
@@ -210,7 +218,6 @@
             }
         })
     }
-    $(document).ready(teaMyCourses());
 
     function addAssignment(cId){
         $("#addAssignment").modal('show');
@@ -221,7 +228,8 @@
             name: $("#name").val(),
             answer:$("#answer").val(),
             expireDate:$("#expireDate").val(),
-            courseId:courseId
+            courseId:courseId,
+            serialNumber:$("#serialNumber").val()
         };
         $.ajax({
             url:"/courseAssignment",
@@ -233,6 +241,8 @@
             }
         })
     };
+
+    //日期选择器的js
     $('.form_date').datetimepicker({
         language:  'En',
         weekStart: 1,
@@ -244,6 +254,7 @@
         forceParse: 0
     });
 
+    //显示所有作业
     function teaAssignment(){
         $.ajax({
             url:"/teaAssignments",

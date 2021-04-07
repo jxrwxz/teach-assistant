@@ -60,7 +60,7 @@
                 alert("发送了信息");
                 var message = $("#chatContent").val();
                 message = "{\"message\":\"" + message + "\",\"fromUserId\":\"";
-                message += "2" + "\",\"toUserId\":\"";
+                message += id + "\",\"toUserId\":\"";
                 message += "1" + "\"}";
                 chat_websocket.send(message);
                 writeToScreen("Sent message: " + message);

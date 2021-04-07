@@ -66,9 +66,9 @@ public class WebSocket {
     @OnClose
     public void onClose(CloseReason closeReason){
         if(identity.equals("student")){
-            studentWebSocketMap.remove(session.getId());
+            studentWebSocketMap.remove(this.userId);
         }else if(identity.equals("teacher")){
-            teacherWebSocketMap.remove(session.getId());
+            teacherWebSocketMap.remove(this.userId);
         }
         System.out.println(closeReason);
     }
@@ -86,11 +86,10 @@ public class WebSocket {
                 map1.put("textMessage", textMessage);
                 map1.put("fromUserId", userId.toString());
 
-                //这个ID是websocket session ID
+                //这个ID不是websocket session ID？是userId
                 map1.put("toUserId", toUserId);
 
                 System.out.println("开始发消息给(UserId) " + toUserId);
-//                sendMessageTo(new JSONObject(map1).toString(), toUserId);
                 sendMessageTo(new JSONObject(map1).toString(),toUserId);
         } catch (JSONException | IOException e) {
             e.printStackTrace();

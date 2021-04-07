@@ -82,9 +82,10 @@ public class TeacherController {
         Long courseId=Long.parseLong(request.getParameter("courseId"));
         String name=request.getParameter("name");
         String answer=request.getParameter("answer");
+        Integer serialNumber=Integer.parseInt(request.getParameter("serialNumber"));
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
         Date expireDate=dateFormat.parse(request.getParameter("expireDate"));
-        Assignment assignment=new Assignment(name,answer,expireDate,courseId,teacher.getId());
+        Assignment assignment=new Assignment(name,answer,expireDate,courseId,teacher.getId(),serialNumber);
         assignmentRepo.save(assignment);
     }
 

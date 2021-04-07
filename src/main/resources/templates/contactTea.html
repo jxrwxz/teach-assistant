@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="templates/css/bootstrap.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         .chat_room{
             width: 600px;
@@ -63,8 +63,8 @@
     </style>
 </head>
 <body>
-<script src="templates/js/jquery-3.4.1.min.js"></script>
-<script src="templates/js/bootstrap.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <script>
     var chat_websocket;
@@ -73,6 +73,7 @@
     var identity=null;
     var id;
     var words=document.getElementById("words");
+    var toId;
     //LOR:Left or Right,1代表左边，0代表右边
     function writeToScreen(message,LOR){
         var str='';
@@ -86,6 +87,7 @@
     };
 
     $(document).ready(function () {
+        //判断是否登录登录并且获取登录信息
         $.ajax({
             url:"/loginOrNot",
             type:"get",
@@ -100,6 +102,22 @@
                     writeToScreen("Connected !",1);
                     // doSend(textID.value);
                 }
+            }
+        });
+        //获取要交流的教师的ID号
+        $.ajax({
+            url:"/getContactTeaId",
+            type:"get",
+            success:function (data){
+                toId=data.teacherId;
+                $.ajax({
+                    url:"/stuHasContactedTea",
+                    data:{
+                        studentId:id,
+                        teacherId:toId
+                    },
+                    type:"post"
+                });
             }
         });
     });
@@ -120,8 +138,8 @@
             $("#fsbtn").click(function () {
                 var message = $("#chatContent").val();
                 message = "{\"message\":\"" + message + "\",\"fromUserId\":\"";
-                message += "1" + "\",\"toUserId\":\"";
-                message += "2" + "\"}";
+                message += id + "\",\"toUserId\":\"";
+                message += toId + "\"}";
                 chat_websocket.send(message);
                 writeToScreen("Sent message: " + message,0);
                 chat_websocket.onmessage = function (evt) {
@@ -135,7 +153,7 @@
 
 </script>
 
-<h1>讨论</h1>
+<h1 class="text-center">讨论</h1>
 
 <div class="chat_room">
     <div class="talk_show" id="words">

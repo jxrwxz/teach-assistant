@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(produces="application/json")
@@ -20,10 +21,17 @@ public class AssignmentController {
     @Autowired
     private AssignmentRepository assignmentRepo;
 
-    @GetMapping("assignmentDetail")
-    public ModelAndView chat(){
-        ModelAndView modelAndView=new ModelAndView("assignmentDetail");
-        return modelAndView;
+    @PostMapping("/allAssignments")
+    public List<Assignment> allAssignments(HttpServletRequest request){
+        Long courseId=Long.parseLong(request.getParameter("courseId"));
+        List<Assignment> assignments=assignmentRepo.findAllByCourseId(courseId);
+        Date now=new Date();
+        for(Assignment a:assignments){
+            if(a.getExpireDate().after(now)) {
+                a.setAnswer("");
+            }
+        }
+        return assignments;
     }
 
 
