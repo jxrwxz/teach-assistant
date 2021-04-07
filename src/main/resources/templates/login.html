@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script>
+    function loginStudent(){
+        var data={
+            name: $("#name").val(),
+            password: $("#password").val(),
+            identity: $("input[name='identity']:checked").val()
+        };
+        $.ajax({
+            url:"/login",
+            data:data,
+            type:"post",
+            success:function (){
+                if($("input[name='identity']:checked").val()!="admin"){
+                    window.location.href='/home';
+                }else {
+                    window.location.href='/adm';
+                }
+
+            }
+        })
+    }
+</script>
+
+<h1 style="text-align: center;margin-bottom: 120px">欢迎来到在线程序实验平台！</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4" style="text-align:center">
+            <form id="form">
+                <div style="margin:30px 30px;font-size:15px">用户登录</div>
+                    用户身份：<label><input name="identity" type="radio" value="student" class="stuForm"/>学生</label>&nbsp;&nbsp;&nbsp;
+                    <label><input name="identity" type="radio" value="teacher" class="stuForm"/>老师</label>&nbsp;&nbsp;&nbsp;
+                    <label><input name="identity" type="radio" value="admin" class="admForm"/>管理员</label>
+                <br>
+                    用户名：<input name="name" type="text" id="name" placeholder="用户名"/>
+                <br>
+                    密码： <input type="text" name="password" id="password" placeholder="密码"/>
+                <br>
+                    <input type="button" id="btn"value="登录"class="btn btn-default" onclick="loginStudent()">
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4 col-lg-offset-4" style="text-align:center">
+        <a href="register.html"class="btn btn-primary" role="button">没有账号？点击注册</a>
+    </div>
+</div>
+</body>
+</html>

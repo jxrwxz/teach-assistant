@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<!--新增课程的按钮-->
+<button class="btn btn-primary btn-lg"data-toggle="modal" data-target="#addCourse">新增课程</button>
+
+<!--新增课程的弹窗-->
+<div id="addCourse" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCourse" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" >新增课程</h4>
+            </div>
+
+            <div class="modal-body">
+                            <form id="form">
+                                课程名: <input type="text" name="courseName" id="courseName"/>
+                                <br>
+                                简介: <input type="text"name="introduction" id="introduction"/>
+                            </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addCourse()">提交</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addCourse(){
+        var data={
+            courseName:$("#courseName").val(),
+            introduction:$("#introduction").val()
+        };
+        $.ajax({
+            url:"/course",
+            data:data,
+            type:"post",
+            success:function (){
+                $("#addCourse").modal('hide');
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

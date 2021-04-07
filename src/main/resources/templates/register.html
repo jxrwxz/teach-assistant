@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎注册！</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+    function addStudent(){
+        var data={
+            identity: $("input[name='identity']:checked").val(),
+            name: $("#name").val(),
+            password: $("#password").val(),
+            phoneNumber:$("#phoneNumber").val(),
+            schoolName:$("#schoolName").val()
+        };
+        $.post("/register",data,function (){
+            window.location.href='/login'
+        });
+    }
+
+
+
+</script>
+
+<h1 style="text-align: center;margin-bottom: 120px">欢迎来到在线程序试验平台！</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4"style="text-align: center">
+            <form id="form">
+                用户身份：<label><input name="identity" type="radio" value="student" class="stuForm"/>学生</label>&nbsp;&nbsp;&nbsp;
+                <label><input name="identity" type="radio" value="teacher" class="stuForm"/>老师</label>
+                <br>
+                用户名：<input name="name" type="text" id="name" class="stuForm"/>
+                <br>
+                密码： <input type="text" name="password" id="password" class="stuForm"/>
+                <br>
+                确认密码：<input type="text" id="confirmCustomerPassword" class="stuForm"/>
+                <br>
+                手机号：<input type="text" name="phoneNumber" id="phoneNumber"class="stuForm"/>
+                <br>
+                所属学校：<input type="text" name="schoolName" id="schoolName"class="stuForm"/>
+                <br>
+                <input type="submit"id="submit"value="注册" onclick="addStudent()">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
