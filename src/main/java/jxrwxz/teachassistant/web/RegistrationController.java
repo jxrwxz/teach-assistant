@@ -1,5 +1,6 @@
 package jxrwxz.teachassistant.web;
 
+import jxrwxz.teachassistant.Admin;
 import jxrwxz.teachassistant.Student;
 import jxrwxz.teachassistant.Teacher;
 import jxrwxz.teachassistant.data.StudentRepository;
@@ -65,7 +66,11 @@ public class RegistrationController {
                 Teacher teacher=(Teacher) session.getAttribute("login");
                 name=teacher.getName();
                 id=teacher.getId();
-              }
+              }else if(identity.equals("admin")){
+                Admin admin=(Admin) session.getAttribute("login");
+                name=admin.getName();
+                id=admin.getId();
+               }
         }
 
         return "{\"name\":\"" + name

@@ -1,7 +1,9 @@
 package jxrwxz.teachassistant.web;
 
+import jxrwxz.teachassistant.Admin;
 import jxrwxz.teachassistant.Student;
 import jxrwxz.teachassistant.Teacher;
+import jxrwxz.teachassistant.data.AdminRepository;
 import jxrwxz.teachassistant.data.StudentRepository;
 import jxrwxz.teachassistant.data.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class LoginController {
     @Autowired
     private TeacherRepository teaRepo;
 
+    @Autowired
+    private AdminRepository admRepo;
+
     @PostMapping("/login")
     public String processLogin(HttpServletRequest request){
         String identity=request.getParameter("identity");
@@ -47,6 +52,14 @@ public class LoginController {
 
             }
         }
+        if(identity.equals("admin")){
+            Admin admin=admRepo.findByNameAndPassword(name,password);
+            if(admin!=null){
+                request.getSession().setAttribute("login",admin);
+                request.getSession().setAttribute("identity","admin");
+                return "adm";
+            }
+        }
         return "login";
     }
     @GetMapping("/login")
@@ -62,5 +75,9 @@ public class LoginController {
         }
         return "home";
     }
+
+    @GetMapping("/adm")
+    public String adm(){
+        return "adm";}
 
 }
