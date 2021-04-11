@@ -72,6 +72,7 @@
     var wsUri = "ws://localhost:8080/chat";
     var identity=null;
     var id;
+    var name;
     var words=document.getElementById("words");
     var toId;
     //LOR:Left or Right,1代表左边，0代表右边
@@ -94,13 +95,12 @@
             success:function (data){
                 identity=data.identity;
                 id=data.id;
+                name=data.name;
                 wsUri += "/" + identity + "/" + id;
-                writeToScreen("ajax成功",1);
-                writeToScreen("Connecting to " + wsUri,1);
+                // writeToScreen("Connecting to " + wsUri,1);
                 chat_websocket = new WebSocket(wsUri);
                 chat_websocket.onopen = function (evt) {
                     writeToScreen("Connected !",1);
-                    // doSend(textID.value);
                 }
             }
         });
@@ -110,27 +110,17 @@
             type:"get",
             success:function (data){
                 toId=data.teacherId;
-                $.ajax({
-                    url:"/stuHasContactedTea",
-                    data:{
-                        studentId:id,
-                        teacherId:toId
-                    },
-                    type:"post"
-                });
             }
         });
     });
     $(document).ready(function() {
         $("#going").click(function () {
             chat_websocket.onmessage = function (evt) {
-                writeToScreen("Received message: " + evt.data,1);
-                // echo_websocket.close();
+                var string=evt.data.toString();
+                data=JSON.parse(string);
+               whatwillbeWritten=data.fromUserName +"说：" + data.textMessage;
+                writeToScreen(whatwillbeWritten,1);
             };
-            // chat_websocket.addEventListener("message", function(event) {
-            //     var data = event.data;
-            //     // 处理数据
-            // });
             chat_websocket.onerror = function (evt) {
                 writeToScreen('ERROR:' + evt.data,1);
                 chat_websocket.close();
@@ -139,13 +129,10 @@
                 var message = $("#chatContent").val();
                 message = "{\"message\":\"" + message + "\",\"fromUserId\":\"";
                 message += id + "\",\"toUserId\":\"";
-                message += toId + "\"}";
+                message += toId + "\",\"fromUserName\":\"";
+                message += name + "\"}";
                 chat_websocket.send(message);
-                writeToScreen("Sent message: " + message,0);
-                chat_websocket.onmessage = function (evt) {
-                    writeToScreen("Received message: " + evt.data,1);
-                    // echo_websocket.close();
-                };
+                writeToScreen(name + "说: " + $("#chatContent").val(),0);
             });
         });
     });
@@ -162,7 +149,7 @@
         </div>
     </div>
     <div class="talk_input">
-        <input type="button" value="开始聊天" style="width: 75px;" class="talk_sub" id="going">
+        <input type="button" value="开始聊天" style="width: 80px;" class="talk_sub" id="going">
         <textarea name="chatContent" id="chatContent"cols="5" rows="20" placeholder="请输入"></textarea>
         <input type="button" id="fsbtn"value="发送"class="btn btn-default" >
     </div>

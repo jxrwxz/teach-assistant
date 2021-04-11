@@ -81,6 +81,7 @@ public class WebSocket {
                 String textMessage = jsonObject.getString("message");
 //                String fromUserId = jsonObject.getString("fromUserId");
                 String toUserId = jsonObject.getString("toUserId");
+                String fromUserName=jsonObject.getString("fromUserName");
 
                 Map<String, Object> map1 = new HashMap<>();
                 map1.put("textMessage", textMessage);
@@ -88,6 +89,7 @@ public class WebSocket {
 
                 //这个ID不是websocket session ID？是userId
                 map1.put("toUserId", toUserId);
+                map1.put("fromUserName",fromUserName);
 
                 System.out.println("开始发消息给(UserId) " + toUserId);
                 sendMessageTo(new JSONObject(map1).toString(),toUserId);
