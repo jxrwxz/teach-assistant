@@ -99,4 +99,9 @@ public class TeacherController {
         return null;
     }
 
+    @GetMapping("contactStu")
+    public ModelAndView dd(){
+        return new ModelAndView("contactStu");
+    }
+
 }

@@ -42,19 +42,10 @@ public class CourseController {
         return courseRepo.findRecentCourses();
     }
 
-//    @ResponseBody
-//    @GetMapping("/course/all")
-//    public List<Course> findAll(){
-//        List<Course> list = courseRepo.findCourses();
-//        return list;
-//    }
-
-//    @ResponseBody
-//    @GetMapping("/course/questCourse")
-//    public List<Course> findQuestCourse(){
-//        List<Course> list = courseRepo.findQuestCourse();
-//        return list;
-//    }
+    @PostMapping("/course/search")
+    public List<Course> searchCourses(HttpServletRequest request){
+        return courseRepo.findByName(request.getParameter("courseName"));
+    }
 
 
     @Transactional
@@ -182,9 +173,4 @@ public class CourseController {
                 + "\"}";
     }
 
-
-    @GetMapping("teacherChat")
-    public ModelAndView dd(){
-        return new ModelAndView("teacherChat");
-    }
 }

@@ -93,6 +93,9 @@
             url:"/loginOrNot",
             type:"get",
             success:function (data){
+                if(data.name){
+                    $("#showUserName").html("<span class=\"glyphicon glyphicon-home\"></span>首页/欢迎"+data.name);
+                }
                 identity=data.identity;
                 id=data.id;
                 name=data.name;
@@ -139,7 +142,20 @@
 
 
 </script>
-
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <img alt="Brand" src="/templates/images/logo.jpg"style="width: 60px;">
+            <a class="navbar-brand active"id="showUserName" href="/home">
+                <span class="glyphicon glyphicon-home"></span>
+                首页</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li id="username"><a href="login">请登录</a></li>
+            <li ><a href="mine"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a></li>
+        </ul>
+    </div>
+</nav>
 <h1 class="text-center">讨论</h1>
 
 <div class="chat_room">

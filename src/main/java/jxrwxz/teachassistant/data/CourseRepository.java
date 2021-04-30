@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface CourseRepository extends CrudRepository<Course,Long>,PagingAndSortingRepository<Course,Long> {
 
+    @Query(value="select * from course where NAME=?1 ",nativeQuery = true)
     List<Course> findByName(String name);
 
 
@@ -55,4 +56,23 @@ public interface CourseRepository extends CrudRepository<Course,Long>,PagingAndS
 
     List<Course> findAllByTeacherId(Long teacherId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "select * from course,course_student where STUDENT_ID=?1 AND course.ID=course_student.COURSE_ID",nativeQuery = true)
+    List<Course> findAllByStudentId(Long studentId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "select * from course where course.ID NOT IN(SELECT COURSE_ID FROM course_student where STUDENT_ID=?1)",nativeQuery = true)
+    List<Course> findAllByNotStudentId(Long studentId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO course_student(COURSE_ID,STUDENT_ID,TEACHER_NAME,COURSE_NAME,STUDENT_NAME) VALUES (?1,?2,?3,?4,?5) ",nativeQuery = true)
+    public void attendcourses(long courseId,long studentId,String teacherName,String courseName,String studentName);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from course_student where COURSE_ID=?1 and STUDENT_ID=?2",nativeQuery = true)
+    public void exitcourses(long cid,long sid);
 }

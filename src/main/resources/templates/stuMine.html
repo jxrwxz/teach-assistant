@@ -3,8 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <title>我的</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <img alt="Brand" src="/templates/images/logo.jpg"style="width: 60px;">
+            <a class="navbar-brand active"id="showUserName" href="/home">
+                <span class="glyphicon glyphicon-home"></span>
+                首页</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li id="username"><a href="login">请登录</a></li>
+            <li ><a href="mine"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a></li>
+        </ul>
+    </div>
+</nav>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+                <li><a href="#" onclick="stuMyCourses()" autofocus="autofocus">我参加的课程</a></li>
+                <li><a href="#" onclick="preCourses()">可参加的课程</a></li>
+                <!--修改密码的按钮-->
+                <li><a href="#" data-toggle="modal" data-target="#changePassword" data-backdrop="static">修改密码</a></li>
+            </ul>
+        </div>
+        <div class="col-md-8 col-md-offset-1" id="presentation">
+
+        </div>
+    </div>
+</div>
+
+
+<!--修改密码弹窗-->
+<div id="changePassword" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="changePassword" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" >修改密码</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="form2">
+                    <br>
+                    新 密 码: <input type="text"name="password" id="password"/>
+                    <br>
+                    确认新密码：<input type="text"name="confirmPassword" id="confirmPassword"/>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="changePassword()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/loginOrNot",
+            type: "get",
+            success: function (data) {
+                if (data.name) {
+                    $("#showUserName").html("<span class=\"glyphicon glyphicon-home\"></span>首页/欢迎" + data.name);
+                }
+                ;
+                if (data.identity == "student") {
+                    $(".teaOnly").hide();
+                }
+            }
+        });
+        stuMyCourses();
+    });
+
+    //显示可以参加的所有课程，参加课程的按钮在这里
+    function preCourses(){
+        $.ajax({
+            url:"/preCourses",
+            type:"get",
+            success:function (data){
+                var divPresentation = $("#presentation");
+                divPresentation.html("");
+                for(var i=0;i<data.length;i++){
+                    divPresentation.append(
+                        '<div class="thumbnail"><div class="caption text-center"> <h3>'
+                        + data[i].name
+                        +'</h3><p class="introduction">'
+                        + data[i].introduction
+                        +'</p><p><a href="/courseDetail/'
+                        + data[i].id + '"class="btn btn-info" role="button">'
+                        + '课程详情'
+                        +'</a></p><button type="button" class="btn btn-primary" onclick="attendCourses('
+                        + data[i].id+',\''+ data[i].name+'\',\''+ data[i].teacherName+'\')">参加课程</button></div></div>'
+                    )
+                }
+            }
+        })
+    }
+    function attendCourses(cId,cName,tName){
+        courseId=cId;
+        courseName=cName;
+        teacherName=tName;
+        var data={
+            courseId:courseId,
+            courseName:courseName,
+            teacherName:teacherName,
+        };
+        $.ajax({
+            url:"/attendCourses",
+            data:data,
+            type:"post",
+            success:function(){
+                alert("参加课程成功！");
+            }
+        })
+    };
+
+    //修改学生密码
+    function changePassword(){
+        var data={
+            password:$('#password').val()
+        };
+        $.ajax({
+            url:"/changePassword",
+            data:data,
+            type:"post",
+            success:function (){
+                alert("修改密码成功");
+                $("#changePassword").modal('hide');
+            }
+        })
+    }
+
+
+    //显示学生参加的所有课程
+    function stuMyCourses(){
+        $.ajax({
+            url:"/stuMyCourses",
+            type:"get",
+            success:function (data){
+                var divPresentation = $("#presentation");
+                divPresentation.html("");
+                for(var i=0;i<data.length;i++){
+                    divPresentation.append(
+                        '<div class="thumbnail"><div class="caption text-center"> <h3>'
+                        + data[i].name
+                        +'</h3><p class="introduction">'
+                        + data[i].introduction
+                        +'</p><p><a href="/courseDetail/'
+                        + data[i].id + '"class="btn btn-info" role="button">'
+                        + '课程详情'
+                        +'</a></p><button type="button" class="btn btn-primary" onclick="exitCourses('
+                        + data[i].id+ ')">退出该课程</button></div></div>'
+                    )
+                }
+            }
+        })
+    }
+    function exitCourses(cId){
+        courseId=cId;
+        var data={
+            courseId:courseId
+        };
+        $.ajax({
+            url:"/exitCourses",
+            data:data,
+            type:"post",
+            success:function(){
+                alert("退出课程成功！");
+            }
+        })
+    };
+
+</script>
 </body>
 </html>

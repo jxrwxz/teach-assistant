@@ -25,19 +25,33 @@
         width: 100%;
         height: 500px;
     }
+    .carousel {
+        position: relative;
+        padding-top: 4px; // added
+    padding-bottom: 28px; // added
+    background-color: gray light; // added
+    }
+    /*.btn-info {*/
+    /*    background-color:#c1ba62;*/
+    /*    color:white;*/
+    /*}*/
 </style>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/home">首页</a>
+            <img alt="Brand" src="/templates/images/logo.jpg"style="width: 60px;">
+            <a class="navbar-brand active"id="showUserName" href="/home">
+                <span class="glyphicon glyphicon-home"></span>
+                首页</a>
         </div>
-        <ul class="nav nav-pills">
-            <li role="presentation" id="username"><a href="login">请登录</a></li>
-            <li role="presentation"><a href="mine">我的</a></li>
-            <li role="presentation" class="teaOnly" id="teaAlert"></li>
-            <li role="presentation" class="teaOnly"><a href='/teacherChat'>教师与学生对话页面</a></li>
-        </ul>
+            <ul class="nav navbar-nav">
+                <li id="username"><a href="login">请登录</a></li>
+                <li ><a href="mine"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a></li>
+                <li class="teaOnly"><a href='/contactStu'>教师与学生对话页面</a></li>
+                <li><a><input type="text" class="form-control" placeholder="课程名" id="search"></a></li>
+                <li><a><button type="submit" class="btn btn-default"onclick="loadCourses('search')">搜索</button></a></li>
+            </ul>
     </div>
 </nav>
 
@@ -53,22 +67,21 @@
         <div class="item active" data-small-image>
             <img src="templates/images/1.jpg" alt="..."class="img-responsive">
             <div class="carousel-caption">
-                啦啦啦啦啦
+                毕设（仅供展示）
             </div>
         </div>
         <div class="item">
             <img src="templates/images/2.png" alt="..."class="img-responsive">
             <div class="carousel-caption">
-                llalla
+                毕设（仅供展示）
             </div>
         </div>
         <div class="item">
             <img src="templates/images/3.jpg" alt="..."class="img-responsive">
             <div class="carousel-caption">
-                llalla
+                毕设（仅供展示）
             </div>
         </div>
-
 
     <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -86,8 +99,6 @@
         <ul class="list-inline">
             <li class="active"><button class="btn btn-link" type="button" value="recentCourses" style="height:50px" onclick="loadCourses('recent')" autofocus="autofocus">最近的新课程</button></li>
             <li> <button class="btn btn-link" type="button" value="popularCourses" style="height:50px" onclick="loadCourses('popular')">最火的课程</button></li>
-            <li>Item 3</li>
-            <li>Item 4</li>
         </ul>
     </div>
 </nav>
@@ -111,12 +122,10 @@
             type:"get",
             success:function (data){
                 if(data.name){
-                    $("#username").html("欢迎"+data.name);
+                    $("#showUserName").html("<span class=\"glyphicon glyphicon-home\"></span>首页/欢迎"+data.name);
                 };
                 if(data.identity=="teacher"){
-                    $("#teaAlert").append("<span class=\"alert alert-warning\">" +
-                        "<strong>提醒！</strong>请打开教师与学生对话页面,以免错过来自学生的信息" +
-                        "</span>");
+                    alert("请打开教师与学生对话页面，以免错过学生的信息。");
                 }else if(data.identity=="student"){
                     $(".teaOnly").hide();
                 }
@@ -128,12 +137,14 @@
     function loadCourses(string){
         var s1="recent";
         var s2="popular";
+        var s3="search";
         var coursesBox=$("#coursesBox");
         if(string==s1){
             $.ajax({
                 url:"/course/recent",
                 type:"get",
                 success:function (data){
+                    coursesBox.html("");
                     for(var i=0;i<data.length;i++) {
                         coursesBox.append("<div class=\"col-sm-6 col-md-6\"><div class=\"thumbnail\">" +
                             "<div class=\"caption text-center\">" +
@@ -155,17 +166,46 @@
                 url:"/course/popular",
                 type:"get",
                 success:function (data){
-                    coursesBox.append("<div class=\"col-sm-6 col-md-6\"><div class=\"thumbnail\">" +
-                        "<div class=\"caption text-center\">" +
-                        "<h3>"+
-                        data[i].name+
-                        "</h3>"+
-                        "<p class=\"introduction\">"+
-                        data[i].introduction+
-                        "<p class=\"courselink\"><a href=\"courseDetail\"" +
-                        data[i].id+
-                        "\" class=\"btn btn-info\" role=\"button\">课程详情</a></p></div></div>"
-                    );
+                    coursesBox.html("");
+                    for(var i=0;i<data.length;i++) {
+                        coursesBox.append("<div class=\"col-sm-6 col-md-6\"><div class=\"thumbnail\">" +
+                            "<div class=\"caption text-center\">" +
+                            "<h3>"+
+                            data[i].name+
+                            "</h3>"+
+                            "<p class=\"introduction\">"+
+                            data[i].introduction+
+                            "<p class=\"courselink\"><a href=\"/courseDetail/" +
+                            data[i].id+
+                            "\" class=\"btn btn-info\" role=\"button\">课程详情</a></p></div></div>"
+                        );
+                    }
+                }
+            })
+        }
+        if(string==s3){
+            data={
+                courseName:$("#search").val()
+            };
+            $.ajax({
+                url:"/course/search",
+                type:"post",
+                data:data,
+                success:function(data){
+                    coursesBox.html("");
+                    for(var i=0;i<data.length;i++) {
+                        coursesBox.append("<div class=\"col-sm-6 col-md-6\"><div class=\"thumbnail\">" +
+                            "<div class=\"caption text-center\">" +
+                            "<h3>"+
+                            data[i].name+
+                            "</h3>"+
+                            "<p class=\"introduction\">"+
+                            data[i].introduction+
+                            "<p class=\"courselink\"><a href=\"/courseDetail/" +
+                            data[i].id+
+                            "\" class=\"btn btn-info\" role=\"button\">课程详情</a></p></div></div>"
+                        );
+                    }
                 }
             })
         }

@@ -7,7 +7,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="background:url(/templates/images/loginBackground.jpg) no-repeat center center fixed; background-size: 100%;">
 
 <script>
     function loginStudent(){
@@ -32,27 +32,35 @@
     }
 </script>
 
-<h1 style="text-align: center;margin-bottom: 120px">欢迎来到在线程序实验平台！</h1>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-4 col-lg-offset-4" style="text-align:center">
-            <form id="form">
-                <div style="margin:30px 30px;font-size:15px">用户登录</div>
+<h1 style="text-align: center">欢迎来到在线程序实验平台！</h1>
+<div class="modal-dialog container"style="margin-top: 5%">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title text-center" id="myModalLabel">登录</h4>
+        </div>
+        <div class="modal-body" id = "model-body">
+            <div class="form-group">
                 用户身份：<label><input name="identity" type="radio" value="student" class="stuForm"/>学生</label>&nbsp;&nbsp;&nbsp;
                 <label><input name="identity" type="radio" value="teacher" class="stuForm"/>老师</label>&nbsp;&nbsp;&nbsp;
                 <label><input name="identity" type="radio" value="admin" class="admForm"/>管理员</label>
-                <br>
-                用户名：<input name="name" type="text" id="name" placeholder="用户名"/>
-                <br>
-                密码： <input type="text" name="password" id="password" placeholder="密码"/>
-                <br>
-                <input type="button" id="btn"value="登录"class="btn btn-default" onclick="loginStudent()">
-            </form>
+            </div>
+            <div class="form-group">
+                用户名：<input name="name" type="text" id="name" placeholder="用户名" class="form-control"/>
+           </div>
+            <div class="form-group">
+                密码： <input type="text" name="password" id="password" placeholder="密码" class="form-control"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group">
+                <input type="button" id="btn"value="登录"class="btn btn-default" onclick="loginStudent()"></div>
+            <div class="form-group">
+                <a href="/register"class="btn btn-primary" role="button">没有账号？点击注册</a>
+            </div>
         </div>
     </div>
-    <div class="col-lg-4 col-lg-offset-4" style="text-align:center">
-        <a href="/register"class="btn btn-primary" role="button">没有账号？点击注册</a>
-    </div>
 </div>
+
+
 </body>
 </html>
