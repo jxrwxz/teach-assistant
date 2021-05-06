@@ -4,117 +4,136 @@
 <head>
     <meta charset="UTF-8">
     <title>在线程序实验平台-主页</title>
-    <link rel="stylesheet" href="templates/css/bootstrap.css">
+    <link rel="stylesheet" href="/templates/css/bootstrap.css">
 </head>
-<body>
+<body data-spy="scroll" data-target="#navigation"data-offset="120">
 <script src="templates/js/jquery-3.4.1.min.js"></script>
 <script src="templates/js/bootstrap.js"></script>
-<style>
-    .carousel-inner img {
-        width : 100% ;
-    }
 
-    .carousel .item {
-        height: 500px;
-        background-color: #777;
-    }
-    .carousel-inner > .item > img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 500px;
-    }
-    .carousel {
-        position: relative;
-        padding-top: 4px; // added
-    padding-bottom: 28px; // added
-    background-color: gray light; // added
-    }
-    /*.btn-info {*/
-    /*    background-color:#c1ba62;*/
-    /*    color:white;*/
-    /*}*/
-</style>
+<div id="all">
+<!--    页面顶端的导航条，右边先是是锚链接，再是链接-->
+    <header class="header">
+        <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+<!--            <a href="#all"class="navbar-brand scroll-to"><img alt="Brand" src="/templates/images/logo.jpg"style="width: 40px;height:40px"></a>-->
+                    <a class="navbar-brand"id="showUserName" href="/home">
+                        <span class="glyphicon glyphicon-home"></span>首页
+                    </a>
+                    <div class="navbar-buttons">
+                        <button type="button"data-toggle="collapse"data-target=".navbar-collapse" class="navbar-toggle navbar-btn">菜单</button>
+                   </div>
+                </div>
+                <div id="navigation"class="collapse navbar-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#recentCourses" class="scroll-to">最新的课程</a></li>
+                        <li><a href="#popularCourses" class="scroll-to">最火的课程</a></li>
+                        <li><a href="#contactAdmin" class="scroll-to">联系我们</a></li>
+                    </ul>
+                    <a href="/login" class="btn navbar-btn btn-ghost">请登录</a></li>
+                    <a href="/mine" class="btn navbar-btn btn-ghost"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a>
+                    <a href="/ide" class="btn navbar-btn btn-ghost" target="_blank">在线编译环境</a>
+                    <a href='/contactStu'class="teaOnly">教师与学生对话页面</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <img alt="Brand" src="/templates/images/logo.jpg"style="width: 60px;">
-            <a class="navbar-brand active"id="showUserName" href="/home">
-                <span class="glyphicon glyphicon-home"></span>
-                首页</a>
+    <section class="text-info no-padding-bottom"style="margin-top: 3%;background: url(/templates/images/background1.png) no-repeat center;padding:50px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-center"style="font-size:50px">这是一个<span class="rotate" style="display:inline;opacity: 0.744996;">实验平台</span></h1>
+                    <h3 class="weight-300 text-center">这是一个自适应的界面。</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-center">实验平台上有超过100种课程</p>
+                    <form class="form-inline margin-top sign-up-form text-center">
+                        <input type="text" class="form-control" placeholder="课程名" id="search">
+                        <button type="button" class="btn btn-default"onclick="loadCourses('search')" style="background: #ff5f66;color:white" data-toggle="modal" data-target="#searchContent">搜索</button>
+                    </form>
+                </div>
+                <div class="col-md-12 col-lg-8 col-lg-offset-2"style="margin-top: 20px">
+                    <p class="margin-bottom--zero"><img alt=""src="/templates/images/homePicture1.png" class="img-responsive"></p>
+                </div>
+            </div>
         </div>
-            <ul class="nav navbar-nav">
-                <li id="username"><a href="login">请登录</a></li>
-                <li ><a href="mine"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a></li>
-                <li class="teaOnly"><a href='/contactStu'>教师与学生对话页面</a></li>
-                <li><a><input type="text" class="form-control" placeholder="课程名" id="search"></a></li>
-                <li><a><button type="submit" class="btn btn-default"onclick="loadCourses('search')">搜索</button></a></li>
-            </ul>
+    </section>
+
+<!--    搜索的弹窗-->
+    <div id="searchContent"tabindex="-1"role="dialog"aria-hidden="true"class="modal fade"aria-labelledby="searchContent">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                    <h4 class="modal-title text-center"id="searchContentTitle"></h4>
+                </div>
+                <div class="modal-body row"id="searchContentLink">
+                </div>
+            </div>
+        </div>
     </div>
-</nav>
 
-<!--巨幕-->
-<div id="carousel-example-generic" class="carousel slide"data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-slide-to="0" data-target="#carousel-example-generic" class="active"></li>
-        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-    </ol>
-
-    <div class="carousel-inner" role="listbox">
-        <div class="item active" data-small-image>
-            <img src="templates/images/1.jpg" alt="..."class="img-responsive">
-            <div class="carousel-caption">
-                毕设（仅供展示）
+    <section class="section"id="recentCourses"style="background: lightgrey">
+        <div class="container" style="padding-bottom: 50px;">
+            <div class="row text-center-mobile" id="recentCoursesContent">
             </div>
         </div>
-        <div class="item">
-            <img src="templates/images/2.png" alt="..."class="img-responsive">
-            <div class="carousel-caption">
-                毕设（仅供展示）
-            </div>
-        </div>
-        <div class="item">
-            <img src="templates/images/3.jpg" alt="..."class="img-responsive">
-            <div class="carousel-caption">
-                毕设（仅供展示）
-            </div>
-        </div>
+    </section>
 
-    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-    </div>
+    <section class="section"id="popularCourses"style="background: white">
+        <div class="container"style="padding-bottom: 50px;">
+            <div class="row text-center-mobile" id="popularCoursesContent">
+            </div>
+        </div>
+    </section>
+    <section class="section"id="contactAdmin"style="background: lightgrey">
+        <div class="container" style="padding-bottom: 50px;padding:50px;">
+            <div class="row">
+                <div class="col-md-4 text-right">
+                    <div class="box-simple">
+                        <div class="icon"><span class="glyphicon glyphicon-screenshot"style="font-size: 30px"></span></div>
+                        <h3>地址</h3>
+                        <p>南京市仙林大学城文苑路3号 210023</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box-simple text-right">
+                        <div class="icon"><span class="glyphicon glyphicon-phone-alt"style="font-size: 30px"></span></div>
+                        <h3>联系电话</h3>
+                        <p class="text-muted">在线时间：星期一至星期五 9:00-16:00</p>
+                        <p><strong>+86 180 6175 7197</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box-simple text-right">
+                        <div class="icon"><span class="glyphicon glyphicon-envelope" style="font-size: 30px"></span></div>
+                        <h3>邮箱</h3>
+                        <p class="text-muted">我们会尽快回复的。</p>
+                        <p><strong><a href="mailto:">jqjxxjxr@126.com</a></strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <footer class="footer"style="background: #260b51">
+        <div style="padding:30px">
+            <dl class="dl-horizontal"style="color: white">
+                <dt>友情链接</dt>
+                <dd><a href="http://www.nufe.edu.cn/">南京财经大学</a><br><br><a href="http://lib.nufe.edu.cn/">南京财经大学图书馆</a></dd>
+                <dt>2021毕设</dt>
+                <dd>Copyright © 2019.Company name All rights reserved.</dd>
+            </dl>
+        </div>
+    </footer>
+
+
 </div>
-
-<nav class="navbar">
-    <div class="container" style="text-align:center">
-        <ul class="list-inline">
-            <li class="active"><button class="btn btn-link" type="button" value="recentCourses" style="height:50px" onclick="loadCourses('recent')" autofocus="autofocus">最近的新课程</button></li>
-            <li> <button class="btn btn-link" type="button" value="popularCourses" style="height:50px" onclick="loadCourses('popular')">最火的课程</button></li>
-        </ul>
-    </div>
-</nav>
-
-<div class="row" id="coursesBox">
-<!--    <div class="col-sm-6 col-md-6">-->
-<!--        <div class="thumbnail">-->
-<!--            <div class="caption text-center">-->
-<!--                <h3>课程名</h3>-->
-<!--                <p class="introduction">balalalalalalaal</p>-->
-<!--                <p class="courselink"><a href="courseDetail" class="btn btn-info" role="button">课程详情</a></p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-</div>
-
 <script>
     $(document).ready(function (){
         $.ajax({
@@ -132,13 +151,14 @@
             }
         });
         loadCourses("recent");
+        loadCourses("popular");
     });
 
     function loadCourses(string){
         var s1="recent";
         var s2="popular";
         var s3="search";
-        var coursesBox=$("#coursesBox");
+        var coursesBox=$("#recentCoursesContent");
         if(string==s1){
             $.ajax({
                 url:"/course/recent",
@@ -146,9 +166,9 @@
                 success:function (data){
                     coursesBox.html("");
                     for(var i=0;i<data.length;i++) {
-                        coursesBox.append("<div class=\"col-sm-6 col-md-6\"><div class=\"thumbnail\">" +
+                        coursesBox.append("<div class=\"col-md-4\"style=\"background: white; height:200px;\"><div class=\"thumbnail\">" +
                             "<div class=\"caption text-center\">" +
-                            "<h3>"+
+                            "<h3 style=\"color:#556b2f\">"+
                             data[i].name+
                             "</h3>"+
                             "<p class=\"introduction\">"+
@@ -166,19 +186,19 @@
                 url:"/course/popular",
                 type:"get",
                 success:function (data){
+                    var coursesBox=$("#popularCoursesContent");
                     coursesBox.html("");
                     for(var i=0;i<data.length;i++) {
-                        coursesBox.append("<div class=\"col-sm-6 col-md-6\"><div class=\"thumbnail\">" +
+                        coursesBox.append("<div class=\"col-md-4\"style=\"background: white; height:200px;\"><div class=\"thumbnail\">" +
                             "<div class=\"caption text-center\">" +
-                            "<h3>"+
+                            "<h3 style=\"color:darkolivegreen\">"+
                             data[i].name+
                             "</h3>"+
                             "<p class=\"introduction\">"+
                             data[i].introduction+
                             "<p class=\"courselink\"><a href=\"/courseDetail/" +
                             data[i].id+
-                            "\" class=\"btn btn-info\" role=\"button\">课程详情</a></p></div></div>"
-                        );
+                            "\" class=\"btn btn-info\" role=\"button\">课程详情</a></p></div></div>");
                     }
                 }
             })
@@ -192,19 +212,16 @@
                 type:"post",
                 data:data,
                 success:function(data){
+                    coursesBox=$("#searchContentLink");
                     coursesBox.html("");
+                    $("#searchContentTitle").html("");
                     for(var i=0;i<data.length;i++) {
-                        coursesBox.append("<div class=\"col-sm-6 col-md-6\"><div class=\"thumbnail\">" +
-                            "<div class=\"caption text-center\">" +
-                            "<h3>"+
-                            data[i].name+
-                            "</h3>"+
-                            "<p class=\"introduction\">"+
+                        $("#searchContentTitle").append(data[i].name);
+                        coursesBox.append("<div><p class=\"introduction text-center\">"+
                             data[i].introduction+
-                            "<p class=\"courselink\"><a href=\"/courseDetail/" +
+                            "<p class=\"courselink text-center\"><a href=\"/courseDetail/" +
                             data[i].id+
-                            "\" class=\"btn btn-info\" role=\"button\">课程详情</a></p></div></div>"
-                        );
+                            "\" class=\"btn btn-info\" role=\"button\">课程详情</a></p></div>");
                     }
                 }
             })

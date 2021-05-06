@@ -5,57 +5,206 @@
     <title>Title</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<body data-spy="scroll" data-target="#navigation"data-offset="120">
+<div id="all"style="bottom: 0px">
 <!--顶部的导航条-->
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <img alt="Brand" src="/templates/images/logo.jpg"style="width: 60px;">
-            <a class="navbar-brand active"id="showUserName" href="/home">
-                <span class="glyphicon glyphicon-home"></span>
-                首页</a>
+    <!--    页面顶端的导航条，右边先是是锚链接，再是链接-->
+    <header class="header">
+        <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <!--            <a href="#all"class="navbar-brand scroll-to"><img alt="Brand" src="/templates/images/logo.jpg"style="width: 40px;height:40px"></a>-->
+                    <a class="navbar-brand"id="showUserName" href="/home">
+                        <span class="glyphicon glyphicon-home"></span>首页
+                    </a>
+                    <div class="navbar-buttons">
+                        <button type="button"data-toggle="collapse"data-target=".navbar-collapse" class="navbar-toggle navbar-btn">菜单</button>
+                    </div>
+                </div>
+                <div id="navigation"class="collapse navbar-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#courseIntroduction"class="scroll-to">课程详情</a></li>
+                        <li><a href="#courseAssignments" class="scroll-to">课程作业</a></li>
+                        <li><a href="#courseComments"class="scroll-to">课程评价</a></li>
+                        <li><a href="#contactAdmin" class="scroll-to">联系我们</a></li>
+                    </ul>
+                    <a href="/login" class="btn navbar-btn btn-ghost">请登录</a></li>
+                    <a href="/mine" class="btn navbar-btn btn-ghost"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a>
+                    <a href="/ide" class="btn navbar-btn btn-ghost" target="_blank">在线编译环境</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+<!--   课程页面的上部分的导航条下的的标题加图片-->
+    <div class="titled-pane" style="margin-top:3%;padding:50px;background: url(/templates/images/coursePageBackground2.jpg);background-position: center center;background-size: cover;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 class="courseName"style="margin-top: 50px;">课程名字</h1>
+                    <p style="margin-bottom: 30px;"><span>首页</span> / 课程</p>
+                </div>
+            </div>
         </div>
-        <ul class="nav navbar-nav">
-            <li id="username"><a href="login">请登录</a></li>
-            <li ><a href="mine"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a></li>
-            <li class="teaOnly"><a href='/contactStu'>教师与学生对话页面</a></li>
-        </ul>
     </div>
-</nav>
-<h1 class="text-center">
-    <span class="glyphicon glyphicon-tag" aria-hidden="true">课程标题</span>
-</h1>
-<br>
-<br>
-<h3 class="text-info text-center">课程详情</h3>
-<br>
-<br>
-<!--课程详情列表-->
-<dl class="dl-horizontal text-center">
-    <div class="row">
-        <button type="button" class="btn btn-success col-lg-offset-9 btn-lg"><a href="/contactTea/" id="contactTea">联系老师</a></button>
-    </div>
-    <dt>课程简介</dt>
-    <dd id="introduction">Item 1</dd>
-    <br>
-    <dt>教师</dt>
-    <dd id="teacherName">Item 2</dd>
-    <br>
-    <dt>教师简介</dt>
-    <dd id="teacherProfile">llll</dd>
-    <br>
-    <dt>教师所在学校</dt>
-    <dd id="school">dddd</dd>
-    <br>
-    <dt>参加学生数量</dt>
-    <dd id="numberOfStudents">ddddd</dd>
-</dl>
+
+    <section id="courseIntroduction"style="margin-bottom: 3%;margin-top: 3%;"class="section">
+        <div class="container">
+            <div class="courseDetailBox">
+                <div class="col-md-6 col-sm-12 col-12">
+                    <img src="/templates/images/coursePageCourse.png"style="height:300px">
+                </div>
+                <div class="col-md-6 col-sm-12 col-12 content">
+                    <h2 class="courseName text-left">课程名称</h2>
+                    <p id="courseIntroductionIntroduction"class="text-left">这是课程简介。这是课程简介。这是课程简介。这是课程简介。这是课程简介。这是课程简介。</p>
+                    <div>
+                        <p id="teacherName"><strong>教师：</strong></p>
+                        <p id="school"><strong>教师所在学校：</strong></p>
+                        <p id="numberOfStudents"><strong>参加人数:</strong></p>
+                    </div>
+                    <div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default"style="background: #ff5f66;"><a href="/contactTea/" id="contactTea"style="color:white">联系老师</a></button>
+                            <button type="button" class="btn btn-default"style="background: white;color:black;">参加课程</button>
+                            <button type="button" class="btn btn-default"style="background: white;"><a href="/ide" target="_blank"style="color:black;">在线编译环境</a></button>
+                        </div>
+                    </div>
+                    <div class="information"style="margin-top: 20px">
+                        <ul class="nav nav-tabs"role="tablist">
+                            <li class="active"role="presentation">
+                                <a style="color:gray"class="nav-link active"data-toggle="tab"href="#tabMaterial"role="tab"aria-controls="tabMaterial">课程材料</a>
+                            </li>
+                            <li role="presentation">
+                                <a style="color:gray"class="nav-link"data-toggle="tab"href="#tabTeaProfile"role="tab"aria-controls="tabTeaProfile"aria-selected="false">教师简介</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active"id="tabMaterial"role="tabpanel"aria-labelledby="pillsMaterial">
+                                <p>这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。</p>
+                            </div>
+                            <div class="tab-pane"id="tabTeaProfile"role="tabpanel" aria-labelledby="pillsTeaProfile">
+                                <p id="teacherProfile">这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<hr style="width:1100px;color:slategrey">
+
+    <section class="section"id="courseAssignments">
+        <div class="container" style="padding-bottom: 50px;padding:50px;">
+            <div class="row" id="courseAssignmentsContent">
+                <div class="title col-md-12">
+                    <h3 class="text-center">课程作业</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr style="width:1100px;color:slategrey">
+
+    <section class="section"id="courseComments">
+        <div class="container" style="padding-bottom: 50px;padding:50px;">
+            <div class="row">
+                <div class="title">
+                    <h3 class="text-center">课程评价</h3>
+                </div>
+                <div class="col-md-3 text-center"style="padding:30px">
+                    <div class="box-simple">
+                        <div class="image"><img src="/templates/images/1.jpg"style="width: 260px"></div>
+                        <br>
+                        <br>
+                        <p style="color:#556b2f">学生名称</p>
+                        <p>这是评价。这是评价。这是评价。这是评价。这是评价。这是评价。</p>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center"style="padding:30px">
+                    <div class="box-simple">
+                        <p style="color:#556b2f">学生名称</p>
+                        <p>这是评价。这是评价。这是评价。这是评价。这是评价。这是评价。</p>
+                        <br>
+                        <br>
+                        <div class="image"><img src="/templates/images/1.jpg"style="width: 260px"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center"style="padding:30px">
+                    <div class="box-simple">
+                        <div class="image"><img src="/templates/images/1.jpg"style="width: 260px"></div>
+                        <br>
+                        <br>
+                        <p style="color:#556b2f">学生名称</p>
+                        <p>这是评价。这是评价。这是评价。这是评价。这是评价。这是评价。</p>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center"style="padding:30px">
+                    <div class="box-simple">
+                        <p style="color:#556b2f">学生名称</p>
+                        <p>这是评价。这是评价。这是评价。这是评价。这是评价。这是评价。</p>
+                        <br>
+                        <br>
+                        <div class="image"><img src="/templates/images/1.jpg"style="width: 260px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr style="width:1100px;color:slategrey">
+
+    <section class="section"id="contactAdmin">
+        <div class="container" style="padding-bottom: 50px;padding:50px;">
+            <div class="row">
+                <div class="col-md-4 text-right">
+                    <div class="box-simple">
+                        <div class="icon"><span class="glyphicon glyphicon-screenshot"style="font-size: 30px"></span></div>
+                        <h3>地址</h3>
+                        <p>南京市仙林大学城文苑路3号 210023</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box-simple text-right">
+                        <div class="icon"><span class="glyphicon glyphicon-phone-alt"style="font-size: 30px"></span></div>
+                        <h3>联系电话</h3>
+                        <p class="text-muted">在线时间：星期一至星期五 9:00-16:00</p>
+                        <p><strong>+86 180 6175 7197</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box-simple text-right">
+                        <div class="icon"><span class="glyphicon glyphicon-envelope" style="font-size: 30px"></span></div>
+                        <h3>邮箱</h3>
+                        <p class="text-muted">我们会尽快回复的。</p>
+                        <p><strong><a href="mailto:">jqjxxjxr@126.com</a></strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr style="width:1100px;color:slategrey">
+
+    <footer class="footer"style="background: #260b51">
+        <div style="padding:30px">
+            <dl class="dl-horizontal"style="color: white">
+                <dt>友情链接</dt>
+                <dd><a href="http://www.nufe.edu.cn/">南京财经大学</a><br><br><a href="http://lib.nufe.edu.cn/">南京财经大学图书馆</a></dd>
+                <dt>2021毕设</dt>
+                <dd>Copyright © 2019.Company name All rights reserved.</dd>
+            </dl>
+        </div>
+    </footer>
+
 <!--显示该课程下的作业-->
 <div class="row">
    <div class="panel panel-default col-lg-8 col-lg-offset-2">
    </div>
+</div>
 </div>
 <script>
     var courseId=0;
@@ -80,14 +229,15 @@
             url:"/courseDetail",
             type:"get",
             success:function (data){
-                $("#introduction").html(data.introduction);
-                $("#numberOfStudents").html(data.numberOfStudents);
-                $("h1").children("span").html(data.name);
-                $("#teacherName").html(data.teacherName);
+                $("#courseIntroductionIntroduction").html(data.introduction);
+                $("#numberOfStudents").append(data.numberOfStudents);
+                $(".courseName").html(data.name);
+                $("#teacherName").append(data.teacherName);
                 $("#teacherProfile").html(data.teacherProfile);
-                $("#school").html(data.school);
+                $("#school").append(data.school);
                 $("#contactTea").attr("href","/contactTea/" + data.teacherId);
                 courseId=data.courseId;
+                $(".tabMaterial").html(data.material);
                 //显示所有的作业
 
                 var data = {
@@ -99,22 +249,19 @@
                     type: "post",
                     success: function (data) {
                         var start = 1;
-                        var pannel = $(".panel-default");
+                        var pannel = $("#courseAssignmentsContent");
                         for (var i = 0; i < data.length; i++) {
-                            if (data[i].serialNumber == start) {
-                                pannel.append("<div class=\"panel-heading\">" +
-                                    "        <h3 class=\"panel-title\"\">第"+
-                                    start+
-                                    "次作业</h3>" +
-                                    "    </div><div class=\"panel-body\">"
-                                );
-                                start++;
-                            }
-                            pannel.append("<p title=\"答案（仅可显示已过期的作业的）\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-content=\"" +
-                                data[i].answer   +
-                                "\">题目 "   +
-                                data[i].name +
-                                "</p>")
+                            pannel.append("<div class='col-md-4 text-center'><p>第"
+                                +data[i].serialNumber
+                                +"次作业</p><br><p data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"\n"
+                                +"            data-content=\"作业答案是"
+                                +data[i].answer
+                                +"\">作业题目："
+                                +data[i].name
+                                +"</p><p class='text-muted'>过期时间为："
+                                +data[i].expireDate.substring(0,10)
+                                +"</p></div>");
+
                         }
                         $("[data-toggle='popover']").popover();
                     }

@@ -78,6 +78,13 @@ public class LoginController {
 
     @GetMapping("/adm")
     public String adm(){
-        return "adm";}
+        return "adm";
+    }
 
+    @GetMapping("/test")
+    public ModelAndView test(){
+        return new ModelAndView("test");
+    }
 }
+
+

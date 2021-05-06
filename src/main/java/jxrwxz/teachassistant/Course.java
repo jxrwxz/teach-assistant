@@ -38,13 +38,25 @@ public class Course {
 
     private String introduction;
 
+    @Column(name="COMMENTS_NUMBER")
+    private Integer commentsNumber;
+
+    @Column(name="MATERIAL")
+    private String material;
+
     public void addNumberOfStudents(){
         numberOfStudents++;
     }
 
+
     @PrePersist
     void createdAt(){
         this.createdAt=new Date();
+        this.commentsNumber=new Integer(0);
+    }
+
+    public void addCommentsNumber(){
+        commentsNumber++;
     }
 
     public Course(String teacherName,String name,String introduction,Long teacherId){

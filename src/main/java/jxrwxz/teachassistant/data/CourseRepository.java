@@ -15,8 +15,10 @@ public interface CourseRepository extends CrudRepository<Course,Long>,PagingAndS
     @Query(value="select * from course where NAME=?1 ",nativeQuery = true)
     List<Course> findByName(String name);
 
+    @Query(value="select NAME from course where ID=?1",nativeQuery = true)
+    String findCourseNameById(Long Id);
 
-    @Query(value = "select * from course ORDER BY ID desc LIMIT 16",nativeQuery = true)
+    @Query(value = "select * from course ORDER BY ID desc LIMIT 9",nativeQuery = true)
     List<Course> findRecentCourses();
 
     @Query(value = "select * from course where PROVED=1 ",nativeQuery = true)
@@ -51,7 +53,7 @@ public interface CourseRepository extends CrudRepository<Course,Long>,PagingAndS
     @Query(value = "select * from course where PROVED=0 limit ?1,?2 ",nativeQuery = true)
     public List<Course> questAllByLimit(int offset,int limit);
 
-    @Query(value= "select * from course order by NUMBER_OF_STUDENTS desc LIMIT 10",nativeQuery = true)
+    @Query(value= "select * from course order by NUMBER_OF_STUDENTS desc LIMIT 9",nativeQuery = true)
     List<Course> findPopularCourses();
 
     List<Course> findAllByTeacherId(Long teacherId);

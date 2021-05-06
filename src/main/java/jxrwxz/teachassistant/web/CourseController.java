@@ -170,6 +170,8 @@ public class CourseController {
                 +"\",\"school\":\"" + teacher.getSchoolName()
                 +"\",\"courseId\":\"" + course.getId()
                 +"\",\"teacherId\":\"" + teacher.getId()
+                +"\",\"commentsNumber\":\"" + course.getCommentsNumber()
+                +"\",\"material\":\"" + course.getMaterial()
                 + "\"}";
     }
 
