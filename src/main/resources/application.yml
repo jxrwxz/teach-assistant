@@ -9,4 +9,3 @@ spring:
   mvc:
     view:
       suffix: .html
-

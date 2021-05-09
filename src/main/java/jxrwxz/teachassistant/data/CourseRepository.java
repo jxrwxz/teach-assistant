@@ -68,13 +68,14 @@ public interface CourseRepository extends CrudRepository<Course,Long>,PagingAndS
     @Query(value = "select * from course where course.ID NOT IN(SELECT COURSE_ID FROM course_student where STUDENT_ID=?1)",nativeQuery = true)
     List<Course> findAllByNotStudentId(Long studentId);
 
-    @Transactional
-    @Modifying
-    @Query(value = "INSERT INTO course_student(COURSE_ID,STUDENT_ID,TEACHER_NAME,COURSE_NAME,STUDENT_NAME) VALUES (?1,?2,?3,?4,?5) ",nativeQuery = true)
-    public void attendcourses(long courseId,long studentId,String teacherName,String courseName,String studentName);
 
     @Transactional
     @Modifying
     @Query(value = "delete from course_student where COURSE_ID=?1 and STUDENT_ID=?2",nativeQuery = true)
-    public void exitcourses(long cid,long sid);
+    void exitcourses(long cid,long sid);
+
+
+    @Query(value="select TEACHER_NAME from course where course.ID=?1",nativeQuery = true)
+    String findTeacherNameByCourseId(Long courseId);
+
 }

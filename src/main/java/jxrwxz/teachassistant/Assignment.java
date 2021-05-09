@@ -18,6 +18,7 @@ public class Assignment {
     private Long id;
 
     @NotNull
+    @Column(name="COURSE_ID")
     private Long courseId;
 
     @NotNull

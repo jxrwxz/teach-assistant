@@ -68,7 +68,7 @@
                     <div>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default"style="background: #ff5f66;"><a href="/contactTea/" id="contactTea"style="color:white">联系老师</a></button>
-                            <button type="button" class="btn btn-default"style="background: white;color:black;">参加课程</button>
+                            <button type="button" class="btn btn-default"style="background: white;color:black;"onclick="attendCourse()">参加课程</button>
                             <button type="button" class="btn btn-default"style="background: white;"><a href="/ide" target="_blank"style="color:black;">在线编译环境</a></button>
                         </div>
                     </div>
@@ -83,10 +83,10 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active"id="tabMaterial"role="tabpanel"aria-labelledby="pillsMaterial">
-                                <p>这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。这是材料。</p>
+                                <p>暂无。</p>
                             </div>
                             <div class="tab-pane"id="tabTeaProfile"role="tabpanel" aria-labelledby="pillsTeaProfile">
-                                <p id="teacherProfile">这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。这是教师简介。</p>
+                                <p id="teacherProfile">暂无。</p>
                             </div>
                         </div>
                     </div>
@@ -111,45 +111,9 @@
 
     <section class="section"id="courseComments">
         <div class="container" style="padding-bottom: 50px;padding:50px;">
-            <div class="row">
+            <div class="row"id="commentsbox">
                 <div class="title">
                     <h3 class="text-center">课程评价</h3>
-                </div>
-                <div class="col-md-3 text-center"style="padding:30px">
-                    <div class="box-simple">
-                        <div class="image"><img src="/templates/images/1.jpg"style="width: 260px"></div>
-                        <br>
-                        <br>
-                        <p style="color:#556b2f">学生名称</p>
-                        <p>这是评价。这是评价。这是评价。这是评价。这是评价。这是评价。</p>
-                    </div>
-                </div>
-                <div class="col-md-3 text-center"style="padding:30px">
-                    <div class="box-simple">
-                        <p style="color:#556b2f">学生名称</p>
-                        <p>这是评价。这是评价。这是评价。这是评价。这是评价。这是评价。</p>
-                        <br>
-                        <br>
-                        <div class="image"><img src="/templates/images/1.jpg"style="width: 260px"></div>
-                    </div>
-                </div>
-                <div class="col-md-3 text-center"style="padding:30px">
-                    <div class="box-simple">
-                        <div class="image"><img src="/templates/images/1.jpg"style="width: 260px"></div>
-                        <br>
-                        <br>
-                        <p style="color:#556b2f">学生名称</p>
-                        <p>这是评价。这是评价。这是评价。这是评价。这是评价。这是评价。</p>
-                    </div>
-                </div>
-                <div class="col-md-3 text-center"style="padding:30px">
-                    <div class="box-simple">
-                        <p style="color:#556b2f">学生名称</p>
-                        <p>这是评价。这是评价。这是评价。这是评价。这是评价。这是评价。</p>
-                        <br>
-                        <br>
-                        <div class="image"><img src="/templates/images/1.jpg"style="width: 260px"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -208,6 +172,7 @@
 </div>
 <script>
     var courseId=0;
+    var teacherName;
     $(document).ready(function (){
         //判断并显示用户的登录信息
         $.ajax({
@@ -237,6 +202,7 @@
                 $("#school").append(data.school);
                 $("#contactTea").attr("href","/contactTea/" + data.teacherId);
                 courseId=data.courseId;
+                teacherName=data.teacherName;
                 $(".tabMaterial").html(data.material);
                 //显示所有的作业
 
@@ -252,23 +218,83 @@
                         var pannel = $("#courseAssignmentsContent");
                         for (var i = 0; i < data.length; i++) {
                             pannel.append("<div class='col-md-4 text-center'><p>第"
-                                +data[i].serialNumber
-                                +"次作业</p><br><p data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"\n"
-                                +"            data-content=\"作业答案是"
-                                +data[i].answer
-                                +"\">作业题目："
-                                +data[i].name
-                                +"</p><p class='text-muted'>过期时间为："
-                                +data[i].expireDate.substring(0,10)
-                                +"</p></div>");
-
+                                + data[i].serialNumber
+                                + "次作业</p><br><p data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"\n"
+                                + "            data-content=\"作业答案是"
+                                + data[i].answer
+                                + "\">作业题目："
+                                + data[i].name
+                                + "</p><p class='text-muted'>过期时间为："
+                                + data[i].expireDate.substring(0, 10)
+                                + "</p></div>");
                         }
                         $("[data-toggle='popover']").popover();
                     }
                 })
             }
         });
+        commentsByCourseId();
     });
+
+    function commentsByCourseId(){
+        $.ajax({
+            url:"/allCommentsByCourseId",
+            type:"get",
+            success:function (data){
+                var commentsBox=$("#commentsbox");
+                for(i=0;i<data.length;i++){
+                    if(i%2==1) {
+                        commentsBox.append("<div class=\"col-md-3 text-center\"style=\"padding:30px\">" +
+                            "<div class=\"box-simple\">" +
+                            "<div class=\"image\"><img src=\"" +
+                            data[i].commentImage +
+                            "\"style=\"width: 260px\"></div>" +
+                            "<br>" +
+                            "<br>" +
+                            "<p style=\"color:#556b2f\">" +
+                            data[i].studentName +
+                            "</p>" +
+                            "<p>" +
+                            data[i].comment +
+                            "</p>" +
+                            "</div>" +
+                            "</div>")
+                    }else if(i%2==0){
+                        commentsBox.append("<div class=\"col-md-3 text-center\"style=\"padding:30px\">" +
+                            "<div class=\"box-simple\">" +
+                            "<p style=\"color:#556b2f\">" +
+                            data[i].studentName +
+                            "</p>" +
+                            "<p>" +
+                            data[i].comment +
+                            "</p>" +
+                            "<br>" +
+                            "<br>" +
+                            "<div class=\"image\"><img src=\"" +
+                            data[i].commentImage +
+                            "\"style=\"width: 260px\"></div>" +
+                            "</div>" +
+                            "</div>")
+                    }
+                }
+            }
+        })
+    }
+
+    function attendCourse(){
+        $.ajax({
+            url:"/attendCourses",
+            type: "post",
+            data:{
+                courseId:courseId,
+                teacherName:teacherName,
+            },
+            success:function (data){
+                    alert(data.content);
+            }
+        })
+    }
+
 </script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 package jxrwxz.teachassistant.web;
 
+import jxrwxz.teachassistant.Assignment;
+import jxrwxz.teachassistant.Assignment_Student;
 import jxrwxz.teachassistant.Course;
 import jxrwxz.teachassistant.Student;
-import jxrwxz.teachassistant.data.AssignmentRepository;
-import jxrwxz.teachassistant.data.CourseRepository;
-import jxrwxz.teachassistant.data.StudentRepository;
+import jxrwxz.teachassistant.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -27,6 +29,15 @@ public class StudentController {
 
     @Autowired
     private AssignmentRepository assignmentRepo;
+
+    @Autowired
+    private CourseStudentRepository courseStudentRepo;
+
+    @Autowired
+    private AssignmentRepository assignmentRepository;
+
+    @Autowired
+    private AssignmentStudentRepository assignmentStudentRepo;
 
     private Long teacherId;
 
@@ -64,13 +75,24 @@ public class StudentController {
 
     //参加课程
     @PostMapping("/attendCourses")
-    public void attendCourses(HttpServletRequest request) throws ParseException {
+    public String attendCourses(HttpServletRequest request) throws ParseException {
         HttpSession session=request.getSession(false);
         Student student=(Student)(session.getAttribute("login"));
+        Long studentId=student.getId();
         Long courseId=Long.parseLong(request.getParameter("courseId"));
         String teacherName=request.getParameter("teacherName");
-        String courseName=request.getParameter("courseName");
-        courseRepo.attendcourses(courseId,student.getId(),teacherName,courseName,student.getName());
+        if(courseStudentRepo.findRecordByCourseIdAndStudentId(courseId,student.getId())==null){
+            courseStudentRepo.attendcourses(courseId,studentId,teacherName,student.getName());
+            List<Assignment> assignments=assignmentRepository.findAllByCourseId(courseId);
+            Iterator iterator=assignments.iterator();
+            Assignment assignmentTemp;
+            while(iterator.hasNext()){
+                assignmentTemp=(Assignment)(iterator.next());
+                assignmentStudentRepo.saveAssignment(studentId,assignmentTemp.getId(),0);
+            }
+            return "{\"content\":\"参加课程成功\"}";
+        }
+        else return "{\"content\":\"不能重复参加课程\"}";
     }
 
     //退出课程

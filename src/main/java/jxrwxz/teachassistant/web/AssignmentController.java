@@ -46,7 +46,7 @@ public class AssignmentController {
     public List<Assignment_Student> allUndoAssignments(HttpServletRequest request){
         Student temp=(Student)(request.getSession(false).getAttribute("login"));
         Long studentId=temp.getId();
-        List<Assignment_Student> assignment_students=assignmentStudentRepository.findAssignmentsByStudentId(studentId);
+        List<Assignment_Student> assignment_students=assignmentStudentRepository.findAllUndoAssignmentsByStudentId(studentId);
         Date now=new Date();
         Iterator<Assignment_Student> iterator=assignment_students.iterator();
         while(iterator.hasNext()){
@@ -58,6 +58,19 @@ public class AssignmentController {
 
         return assignment_students;
 
+    }
+    @GetMapping("/allFinishedAssignments")
+    public List<Assignment_Student> allFinishedAssignments(HttpServletRequest request){
+        Student temp=(Student)(request.getSession(false).getAttribute("login"));
+        Long studentId=temp.getId();
+        List<Assignment_Student> assignment_students=assignmentStudentRepository.findAllFinishedAssignmentsByStudentId(studentId);
+        return assignment_students;
+    }
+
+    @GetMapping("/finishedAssignment")
+    public void finishedAssignment(HttpServletRequest request){
+        Long assignmentStudentId=Long.parseLong(request.getParameter("assignmentStudentId"));
+        assignmentStudentRepository.finishedAssignment(assignmentStudentId);
     }
 
 
