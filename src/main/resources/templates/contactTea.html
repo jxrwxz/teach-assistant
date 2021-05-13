@@ -62,7 +62,7 @@
         }
     </style>
 </head>
-<body>
+<body style="background:url(/templates/images/contactTeaBackground.jpg) no-repeat center center fixed; background-size: 100%;">
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
@@ -142,23 +142,31 @@
 
 
 </script>
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <img alt="Brand" src="/templates/images/logo.jpg"style="width: 60px;">
-            <a class="navbar-brand active"id="showUserName" href="/home">
-                <span class="glyphicon glyphicon-home"></span>
-                首页</a>
+<div id="all">
+<header class="header">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <!--            <a href="#all"class="navbar-brand scroll-to"><img alt="Brand" src="/templates/images/logo.jpg"style="width: 40px;height:40px"></a>-->
+                <a class="navbar-brand"id="showUserName" href="/home">
+                    <span class="glyphicon glyphicon-home"></span>首页
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button"data-toggle="collapse"data-target=".navbar-collapse" class="navbar-toggle navbar-btn">菜单</button>
+                </div>
+            </div>
+            <div id="navigation"class="collapse navbar-collapse navbar-right">
+                <a href="/login" class="btn navbar-btn btn-ghost">请登录</a></li>
+                <a href="/mine" class="btn navbar-btn btn-ghost"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a>
+                <a href="/ide" class="btn navbar-btn btn-ghost" target="_blank">在线编译环境</a>
+            </div>
         </div>
-        <ul class="nav navbar-nav">
-            <li id="username"><a href="login">请登录</a></li>
-            <li ><a href="mine"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a></li>
-        </ul>
-    </div>
-</nav>
+    </nav>
+</header>
+    <br><br><br>
 <h1 class="text-center">讨论</h1>
 
-<div class="chat_room">
+<div class="chat_room"style="margin-bottom: 1%">
     <div class="talk_show" id="words">
         <div class="chat">
             <span class="asay">开始讨论！</span>
@@ -170,6 +178,6 @@
         <input type="button" id="fsbtn"value="发送"class="btn btn-default" >
     </div>
 </div>
-
+</div>
 </body>
 </html>

@@ -232,6 +232,7 @@ public class CourseController {
                 }
             }
             courseStudentRepo.updateCommentByCourseIdAndStudentId(commentContent,"/d:/images/"+x,courseId,studentId);
+            courseRepo.addCommentsNumberByOne(courseId);
             response.sendRedirect("/mine");
             return "";
         }else {

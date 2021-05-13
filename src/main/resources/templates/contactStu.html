@@ -7,7 +7,7 @@
     <style type="text/css">
         .chat_room{
             width: 600px;
-            height: 500px;
+            height: 510px;
             border: 1px solid #666;
             margin: 50px auto 0;
             background: #f9f9f9;
@@ -62,7 +62,7 @@
         }
     </style>
 </head>
-<body>
+<body style="background:url(/templates/images/contactStuBackground.jpg) no-repeat center center fixed; background-size: 100%;">
 
 <script src="templates/js/jquery-3.4.1.min.js"></script>
 <script src="templates/js/bootstrap.js"></script>
@@ -133,22 +133,28 @@
 
 
 </script>
-
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <img alt="Brand" src="/templates/images/logo.jpg"style="width: 60px;">
-            <a class="navbar-brand active"id="showUserName" href="/home">
-                <span class="glyphicon glyphicon-home"></span>
-                首页</a>
+<div id="all">
+<header class="header">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <!--            <a href="#all"class="navbar-brand scroll-to"><img alt="Brand" src="/templates/images/logo.jpg"style="width: 40px;height:40px"></a>-->
+                <a class="navbar-brand"id="showUserName" href="/home">
+                    <span class="glyphicon glyphicon-home"></span>首页
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button"data-toggle="collapse"data-target=".navbar-collapse" class="navbar-toggle navbar-btn">菜单</button>
+                </div>
+            </div>
+            <div id="navigation"class="collapse navbar-collapse navbar-right">
+                <a href="/login" class="btn navbar-btn btn-ghost">请登录</a></li>
+                <a href="/mine" class="btn navbar-btn btn-ghost"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a>
+                <a href="/ide" class="btn navbar-btn btn-ghost" target="_blank">在线编译环境</a>
+            </div>
         </div>
-        <ul class="nav navbar-nav">
-            <li id="username"><a href="login">请登录</a></li>
-            <li ><a href="mine"><span class="glyphicon glyphicon-tree-deciduous"></span>我的</a></li>
-            <li class="teaOnly"><a href='/contactStu'>教师与学生对话页面</a></li>
-        </ul>
-    </div>
-</nav>
+    </nav>
+</header>
+    <br><br><br>
 <h1 class="text-center">讨论</h1>
 
 <div class="chat_room">
@@ -157,13 +163,15 @@
             <span id="asay">开始讨论！</span>
         </div>
     </div>
-    <div class="talk_input">
+    <div class="talk_input"style="padding-bottom: 5%">
         <input type="button" value="进入聊天室" style="width: 80px;" class="talk_sub" id="going">
         <textarea name="chatContent" id="chatContent" placeholder="请输入" style="width: 70%"></textarea>
-        <input type="number" id="toWhom"placeholder="请输入要发送文字的学生的id(在接收到的消息中可以看到)"style="width:70%;margin:2px">
+        <input type="number" id="toWhom"placeholder="请输入要发送文字的学生的id(在接收到的消息中可以看到)"style="width:70%;margin:2px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="button" id="fsbtn"value="发送"class="btn btn-default" >
     </div>
 </div>
+
 <br><br><br><br>
+</div>
 </body>
 </html>

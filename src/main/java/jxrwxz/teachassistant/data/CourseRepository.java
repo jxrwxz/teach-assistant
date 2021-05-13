@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface CourseRepository extends CrudRepository<Course,Long>,PagingAndSortingRepository<Course,Long> {
 
-    @Query(value="select * from course where NAME=?1 ",nativeQuery = true)
+    @Query(value="select * from course where NAME like ?1% ",nativeQuery = true)
     List<Course> findByName(String name);
 
     @Query(value="select NAME from course where ID=?1",nativeQuery = true)
@@ -77,5 +77,10 @@ public interface CourseRepository extends CrudRepository<Course,Long>,PagingAndS
 
     @Query(value="select TEACHER_NAME from course where course.ID=?1",nativeQuery = true)
     String findTeacherNameByCourseId(Long courseId);
+
+    @Transactional
+    @Modifying
+    @Query(value="update course set course.COMMENTS_NUMBER=course.COMMENTS_NUMBER+1 where course.ID=?1",nativeQuery = true)
+    void addCommentsNumberByOne(Long courseId);
 
 }
