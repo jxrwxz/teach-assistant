@@ -22,6 +22,50 @@
         });
     }
 
+    $(document).ready(function(){
+        $('#password').on('input propertychange', function() {
+            //input propertychange即实时监控键盘输入包括粘贴
+            var pwd = $.trim($(this).val());
+            //获取this，即ipwd的val()值，trim函数的作用是去除空格
+            var rpwd = $.trim($("#confirmCustomerPassword").val());
+            if(rpwd!=""){
+                if(pwd==""&&rpwd==""){
+                    //若都为空，则提示密码不能为空，为了用户体验（在界面上用required同时做了处理）
+                    $("#msg_pwd").html("<font color='red'>密码不能为空</font>");
+                }
+                else{
+                    if(pwd==rpwd){                                 //相同则提示密码匹配
+                        $("#msg_pwd").html("<font color='green'>两次密码匹配通过</font>");
+                        $("#submit").attr("disabled",false); //使按钮无法点击
+                    }else{                                          //不相同则提示密码匹配
+                        $("#msg_pwd").html("<font color='red'>两次密码不匹配</font>");
+                        $("#submit").attr("disabled",true);
+                    }
+                }}
+        })
+    })
+
+    //由于是两个输入框，所以进行两个输入框的几乎相同的判断
+    $(document).ready(function(){
+        $('#confirmCustomerPassword').on('input propertychange', function() {
+            var pwd = $.trim($(this).val());
+            var rpwd = $.trim($("#password").val());
+            if(pwd==""&&rpwd==""){
+                $("#msg_pwd").html("<font color='red'>密码不能为空</font>");
+            }
+            else{
+                if(pwd==rpwd){
+                    $("#msg_pwd").html("<font color='green'>两次密码匹配通过</font>");
+                    $("#submit").attr("disabled",false);
+                }else{
+                    $("#msg_pwd").html("<font color='red'>两次密码不匹配</font>");
+                    $("#submit").attr("disabled",true);
+                }
+            }
+        })
+    })
+
+
 
 
 </script>
@@ -53,6 +97,7 @@
                 所属学校：<input type="text" name="schoolName" id="schoolName"class="stuForm"/>
             </div>
         </div>
+        <p id="msg_pwd" style="margin-left: 150px"></p>
         <div class="modal-footer">
             <div class="form-group">
                 <input type="submit"id="submit"value="注册" onclick="addStudent()">

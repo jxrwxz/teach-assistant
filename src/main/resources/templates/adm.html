@@ -3,26 +3,31 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <title>管理员后台</title>
-        <link rel="stylesheet" type="text/css" href="/templates/easyui/css/default.css" />
-            <link rel="stylesheet" type="text/css" href="/templates/easyui/themes/default/easyui.css" />
-            <link rel="stylesheet" type="text/css" href="/templates/easyui/themes/icon.css" />
-            <script type="text/javascript" src="/templates/easyui/jquery.min.js"></script>
+    <title>管理员后台</title>
+    <link rel="stylesheet" type="text/css" href="/templates/easyui/css/default.css" />
+    <link rel="stylesheet" type="text/css" href="/templates/easyui/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="/templates/easyui/themes/icon.css" />
+    <script type="text/javascript" src="/templates/easyui/jquery.min.js"></script>
     <script type="text/javascript" src="/templates/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src='/templates/easyui/js/outlook2.js'> </script>
     <script>
         var _menus = {"menus":[
-            {"menuid":"2","icon":"","menuname":"课表查看",
-                "menus":[
-                    {"menuid":"21","menuname":"课程列表","icon":"icon-user-student","url":"/courseList"},
-                ]
-            },
-            {"menuid":"4","icon":"","menuname":"请求管理",
-                "menus":[
-                    {"menuid":"42","menuname":"课程请求","icon":"icon-house","url":"/courseQuest"}
-                ]
-            }
-        ]};
+                {"menuid":"2","icon":"","menuname":"课表查看",
+                    "menus":[
+                        {"menuid":"21","menuname":"课程列表","icon":"icon-user-student","url":"/courseList"},
+                    ]
+                },
+                {"menuid":"4","icon":"","menuname":"请求管理",
+                    "menus":[
+                        {"menuid":"42","menuname":"课程请求","icon":"icon-house","url":"/courseQuest"}
+                    ]
+                },
+                {"menuid":"6","icon":"","menuname":"学生管理",
+                    "menus":[
+                        {"menuid":"63","menuname":"添加学生","icon":"icon-house","url":"/addStudent"}
+                    ]
+                }
+            ]};
 
     </script>
     <script>
@@ -56,7 +61,7 @@
 
 </div>
 <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
-<div class="footer">Copyright &copy; By 【jxrwxz】</div>
+    <div class="footer">Copyright &copy; By 【jxrwxz】</div>
 </div>
 <div region="west" hide="true" split="true" title="导航菜单" style="width:180px;" id="west">
     <div id="nav" class="easyui-accordion" fit="true" border="false">

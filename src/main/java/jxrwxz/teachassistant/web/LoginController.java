@@ -35,6 +35,8 @@ public class LoginController {
         String identity=request.getParameter("identity");
         String name=request.getParameter("name");
         String password=request.getParameter("password");
+        HttpSession session = request.getSession();
+        session.setAttribute("token", "authorized");//对于登录的用户在session中添加登录标记
         if(identity.equals("student")){
             Student student=stuRepo.findByNameAndPassword(name,password);
             if(student!=null){

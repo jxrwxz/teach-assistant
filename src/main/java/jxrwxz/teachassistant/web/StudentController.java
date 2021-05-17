@@ -7,14 +7,16 @@ import jxrwxz.teachassistant.Student;
 import jxrwxz.teachassistant.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(produces="application/json")
@@ -111,5 +113,71 @@ public class StudentController {
         Student student=(Student)(session.getAttribute("login"));
         String password=request.getParameter("password");
         studentRepo.changePassword(password,student.getId());
+    }
+
+    //添加学生
+    @GetMapping("/addStudent")
+    public ModelAndView addStudent(){
+        return new ModelAndView("addStudent");
+    }
+
+    @ResponseBody
+    @GetMapping("/student/queststudentPage")
+    public Map<String,Object> getquestCourseList(HttpServletRequest request, HttpServletResponse response) {
+        Integer currentPage = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+        Integer pageSize = request.getParameter("rows") == null ? 999 : Integer.parseInt(request.getParameter("rows"));
+        List<Student> studentList = studentRepo.findAll((currentPage-1)*pageSize,currentPage*pageSize);
+        long total = studentRepo.count();
+        response.setCharacterEncoding("UTF-8");
+        Map<String, Object> ret = new HashMap<String, Object>();
+        ret.put("total", total);
+        ret.put("rows", studentList);
+        //System.out.println(ret);
+        return ret;
+    }
+
+    @ResponseBody
+    @PostMapping("/studentDelete")
+    @DeleteMapping
+    public void deleteStudent(@RequestParam(value = "ids[]") Long[] ids,HttpServletResponse response) throws IOException {
+        try {
+            for (Long id:ids) {
+                studentRepo.deleteById(id);
+            }
+            response.getWriter().write("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @ResponseBody
+    @Transactional
+    @PostMapping("/student/studentChange")
+    public void editCourse(HttpServletRequest request,HttpServletResponse response) {
+        String name = request.getParameter("name");
+        String password = request.getParameter("password").toString();
+        long id = Integer.parseInt(request.getParameter("id").toString());
+        try {
+            studentRepo.updateStudent(name,password,id);
+            response.getWriter().write("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping("/import")
+    public void exImport(@RequestParam(value = "filename") MultipartFile file, HttpSession session,HttpServletResponse response) throws IOException {
+
+        boolean a = false;
+
+        String fileName = file.getOriginalFilename();
+
+        try {
+            a = studentRepo.batchImport(fileName, file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        response.sendRedirect("addStudent");
     }
 }

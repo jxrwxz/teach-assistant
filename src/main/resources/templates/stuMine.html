@@ -94,6 +94,8 @@
                 </form>
             </div>
 
+            <p id="msg_pwd" style="margin-left: 150px"></p>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" onclick="changePassword()">提交</button>
@@ -166,9 +168,7 @@
                         + data[i].id
                         + "\"type=\"button\" class=\"btn btn-info\">"
                         + "课程详情"
-                        + "</a></p><button type=\"button\" class=\"btn btn-primary\" onclick=\"exitCourses("
-                        + data[i].id
-                        + ")\">退出该课程</button>"
+                        + "</a></p>"
                         +"<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#commentCourses\" data-backdrop=\"static\" onclick=\"recordCourseId("
                         + data[i].id
                         + ")\">评价该课程</button>"
@@ -247,6 +247,49 @@
             }
         })
     }
+
+    $(document).ready(function(){
+        $('#password').on('input propertychange', function() {
+            //input propertychange即实时监控键盘输入包括粘贴
+            var pwd = $.trim($(this).val());
+            //获取this，即password的val()值，trim函数的作用是去除空格
+            var rpwd = $.trim($("#confirmCustomerPassword").val());
+            if(rpwd!=""){
+                if(pwd==""&&rpwd==""){
+                    //若都为空，则提示密码不能为空，为了用户体验（在界面上用required同时做了处理）
+                    $("#msg_pwd").html("<font color='red'>密码不能为空</font>");
+                }
+                else{
+                    if(pwd==rpwd){                                 //相同则提示密码匹配
+                        $("#msg_pwd").html("<font color='green'>两次密码匹配通过</font>");
+                        $("#btn_change").attr("disabled",false); //使按钮无法点击
+                    }else{                                          //不相同则提示密码匹配
+                        $("#msg_pwd").html("<font color='red'>两次密码不匹配</font>");
+                        $("#btn_change").attr("disabled",true);
+                    }
+                }}
+        })
+    })
+
+    //由于是两个输入框，所以进行两个输入框的几乎相同的判断
+    $(document).ready(function(){
+        $('#confirmCustomerPassword').on('input propertychange', function() {
+            var pwd = $.trim($(this).val());
+            var rpwd = $.trim($("#password").val());
+            if(pwd==""&&rpwd==""){
+                $("#msg_pwd").html("<font color='red'>密码不能为空</font>");
+            }
+            else{
+                if(pwd==rpwd){
+                    $("#msg_pwd").html("<font color='green'>两次密码匹配通过</font>");
+                    $("#btn_change").attr("disabled",false);
+                }else{
+                    $("#msg_pwd").html("<font color='red'>两次密码不匹配</font>");
+                    $("#btn_change").attr("disabled",true);
+                }
+            }
+        })
+    })
 
 
 </script>

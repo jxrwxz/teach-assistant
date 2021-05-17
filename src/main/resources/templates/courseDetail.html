@@ -67,8 +67,9 @@
                     </div>
                     <div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default"style="background: #ff5f66;"><a href="/contactTea/" id="contactTea"style="color:white">联系老师</a></button>
-                            <button type="button" class="btn btn-default"style="background: white;color:black;"onclick="attendCourse()">参加课程</button>
+                            <button type="button" class="btn btn-default teaOnly"style="background: #ff5f66;"><a href="/contactStu" id="contactStu"style="color:white" >联系学生</a></button>
+                            <button type="button" class="btn btn-default StuOnly"style="background: #ff5f66;"><a href="/contactTea/" id="contactTea"style="color:white">联系老师</a></button>
+                            <button type="button" class="btn btn-default StuOnly"style="background: white;color:black;"onclick="attendCourse()">参加课程</button>
                             <button type="button" class="btn btn-default"style="background: white;"><a href="/ide" target="_blank"style="color:black;">在线编译环境</a></button>
                         </div>
                     </div>
@@ -183,6 +184,7 @@
                     $("#showUserName").html("<span class=\"glyphicon glyphicon-home\"></span>首页/欢迎"+data.name);
                 };
                 if(data.identity=="teacher"){
+                    $(".StuOnly").attr("style","display:none;");
                     alert("请打开教师与学生对话页面，以免错过学生的信息。");
                 }else if(data.identity=="student"){
                     $(".teaOnly").hide();

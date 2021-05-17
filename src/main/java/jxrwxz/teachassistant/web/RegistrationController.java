@@ -56,12 +56,16 @@ public class RegistrationController {
         String name="";
         Long id=new Long(0);
         String identity="";
+        String msg="";
         if(session!=null) {
             identity=(String)session.getAttribute("identity");
             if(identity.equals("student")) {
                 Student student = (Student) session.getAttribute("login");
                 name=student.getName();
                 id=student.getId();
+                if(student.getPassword().equals("123456")){
+                    msg = "newUser";
+                }
             } else if(identity.equals("teacher")){
                 Teacher teacher=(Teacher) session.getAttribute("login");
                 name=teacher.getName();
@@ -75,7 +79,8 @@ public class RegistrationController {
 
         return "{\"name\":\"" + name
                 + "\",\"identity\":\"" + identity
-                + "\",\"id\":\"" + id + "\"}";
+                + "\",\"id\":\"" + id
+                + "\",\"msg\":\"" + msg + "\"}";
     }
 
 }

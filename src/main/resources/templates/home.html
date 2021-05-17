@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>在线程序实验平台-主页</title>
+    <title>在线课程学习平台-主页</title>
     <link rel="stylesheet" href="/templates/css/bootstrap.css">
 </head>
 <body data-spy="scroll" data-target="#navigation"data-offset="120">
@@ -43,13 +43,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="text-center"style="font-size:50px">这是一个<span class="rotate" style="display:inline;opacity: 0.744996;">实验平台</span></h1>
+                    <h1 class="text-center"style="font-size:50px">这是一个<span class="rotate" style="display:inline;opacity: 0.744996;">在线课程学习平台</span></h1>
                     <h3 class="weight-300 text-center">这是一个自适应的界面。</h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <p class="text-center">实验平台上有超过100种课程</p>
+                    <p class="text-center">课程平台上有超过100种课程</p>
                     <form class="form-inline margin-top sign-up-form text-center">
                         <input type="text" class="form-control" placeholder="课程名" id="search">
                         <button type="button" class="btn btn-default"onclick="loadCourses('search')" style="background: #ff5f66;color:white" data-toggle="modal" data-target="#searchContent">搜索</button>
@@ -146,6 +146,9 @@
                 if(data.identity=="teacher"){
                     alert("请打开教师与学生对话页面，以免错过学生的信息。");
                 }else if(data.identity=="student"){
+                    if(data.msg){
+                        alert("现在是初始密码，请修改密码！");
+                    }
                     $(".teaOnly").hide();
                 }
             }
