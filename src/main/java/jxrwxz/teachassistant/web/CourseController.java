@@ -185,6 +185,7 @@ public class CourseController {
                 +"\",\"teacherId\":\"" + teacher.getId()
                 +"\",\"commentsNumber\":\"" + course.getCommentsNumber()
                 +"\",\"material\":\"" + course.getMaterial()
+                +"\",\"image\":\"" + course.getImage()
                 + "\"}";
     }
 

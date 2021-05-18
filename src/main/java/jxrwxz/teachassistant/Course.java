@@ -44,6 +44,9 @@ public class Course {
     @Column(name="MATERIAL")
     private String material;
 
+    @Column(name="IMAGE")
+    private String image;
+
     public void addNumberOfStudents(){
         numberOfStudents++;
     }

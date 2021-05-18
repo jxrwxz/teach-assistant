@@ -51,11 +51,12 @@
         </div>
     </div>
 
+
     <section id="courseIntroduction"style="margin-bottom: 3%;margin-top: 3%;"class="section">
         <div class="container">
             <div class="courseDetailBox">
                 <div class="col-md-6 col-sm-12 col-12">
-                    <img src="/templates/images/coursePageCourse.png"style="height:300px">
+                    <img id="courseImage"src="/templates/images/3.jpg"style="height:300px">
                 </div>
                 <div class="col-md-6 col-sm-12 col-12 content">
                     <h2 class="courseName text-left">课程名称</h2>
@@ -202,6 +203,7 @@
                 $("#teacherName").append(data.teacherName);
                 $("#teacherProfile").html(data.teacherProfile);
                 $("#school").append(data.school);
+                $("#courseImage").attr("src",data.image);
                 $("#contactTea").attr("href","/contactTea/" + data.teacherId);
                 courseId=data.courseId;
                 teacherName=data.teacherName;
